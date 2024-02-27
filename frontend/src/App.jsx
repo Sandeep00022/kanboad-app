@@ -1,11 +1,16 @@
+import { Route, Routes } from "react-router-dom";
 import OAuth from "./components/OAuth";
 import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
 
 const App = () => {
   return (
-    <div>
-      <Home />
-    </div>
+     <>
+     <Routes>
+       <Route path="/" element={<Home />} />
+       <Route path="/oauth" element={<Dashboard />} />
+     </Routes>
+     </>
   );
 };
 
