@@ -10,11 +10,11 @@ export const google = async (req, res, next) => {
     if (user) {
       const token = jwt.sign(
         {
-          email: email,
+          id: user._id,
         },
         process.env.JWTSECRET
       );
-
+  console.log(token)
       const { password, ...rest } = user._doc;
       res
         .status(200)
@@ -38,11 +38,11 @@ export const google = async (req, res, next) => {
       await newUser.save();
       const token = jwt.sign(
         {
-          email: email,
+          id: newUser._id,
         },
         process.env.JWTSECRET
       );
-
+        
       const { password, ...rest } = newUser._doc;
       res
         .status(200)
