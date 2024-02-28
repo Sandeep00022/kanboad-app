@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 
 import Header from "./components/Header";
+import PrivateRoute from "./components/PrivateRoute";
 
 const App = () => {
   return (
@@ -11,7 +12,9 @@ const App = () => {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/dashboard" element={<Dashboard/>} />
+        </Route>
       </Routes>
     </>
   );

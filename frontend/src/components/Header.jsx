@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const Header = () => {
   const { currentUser } = useSelector((state) => state.user);
 
-  console.log(currentUser);
+  //   console.log(currentUser);
 
   return (
     <div className="border-2  flex justify-between p-2">
@@ -17,12 +17,18 @@ const Header = () => {
           </h3>
         </Link>
       </div>
-     <Link to="dashboard?tab=profile">
-     <div className=" flex items-center gap-2 hover:cursor-pointer ">
-        <Avatar img={currentUser?.profilePicture} rounded />
-        <h4>{currentUser.username}</h4>
-      </div>
-     </Link>
+      <Link to="dashboard?tab=profile">
+        <div className=" flex items-center gap-2 hover:cursor-pointer ">
+          {currentUser ? (
+            <>
+              <h4>{currentUser.username}</h4>
+              <Avatar img={currentUser?.profilePicture} rounded />
+            </>
+          ) : (
+            ""
+          )}
+        </div>
+      </Link>
     </div>
   );
 };

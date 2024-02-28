@@ -4,7 +4,7 @@ import bcryptjs from "bcryptjs";
 
 export const google = async (req, res, next) => {
   const { email, name, googlePhotoUrl } = req.body;
-  
+
   try {
     const user = await User.findOne({ email });
     if (user) {
@@ -51,6 +51,17 @@ export const google = async (req, res, next) => {
         })
         .json(rest);
     }
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const Logout = (req, res, next) => {
+  try {
+    res
+      .clearCookie("access_token")
+      .status(200)
+      .json("User has been signed out");
   } catch (error) {
     next(error);
   }
