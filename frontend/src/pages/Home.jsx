@@ -4,10 +4,10 @@ import OAuth from "../components/OAuth";
 const Home = () => {
   return (
     <div className="flex flex-col h-screen justify-between mb-0 ">
-      <h3 className="text-2xl text-center font-italic mt-9">
+      <h3 className="text-2xl text-center font-medium mt-[150px]">
         Kan<span className="text-blue-700">Board</span>
       </h3>
-      <div className="flex flex-col items-center justify-center pt-[100px] ">
+      <div className="flex flex-col items-center justify-center">
         <h1 className="text-4xl font-semibold">Welcome to Kanboard</h1>
         <OAuth />
       </div>
