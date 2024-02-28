@@ -13,7 +13,7 @@ export const createBoard = async (req, res, next) => {
     const board = new Board({
       title,
       createdBy: userId,
-      name:req.user.name,
+      name: req.user.name,
     });
 
     await board.save();
@@ -54,4 +54,25 @@ export const getBoards = async (req, res, next) => {
       lastMonthBoards,
     });
   } catch (error) {}
+};
+
+export const updateBoard = async (req, res, next) => {
+  if (!req.params.boardId || !req.params.userId) {
+    return next(errorHandler(403, "You are not allowed to update this post"));
+  }
+  try {
+    const updateBoard = await Board.findByIdAndUpdate(
+      req.params.boardId,
+      {
+        title: req.body.title,
+      },
+      {
+        new: true,
+      }
+    );
+
+    res.status(200).json(updateBoard);
+  } catch (error) {
+    next(error);
+  }
 };
