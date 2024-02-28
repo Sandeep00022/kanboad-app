@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Button, Modal, TextInput } from "flowbite-react";
 import { useSelector } from "react-redux";
+import DashCard from "./DashCard";
 
 const DashHome = () => {
   const [showModal, setShowModal] = useState(null);
   const [title, setTitle] = useState("");
   const { currentUser } = useSelector((state) => state.user);
   const [postError, setPostError] = useState(null);
+  const [boards, setBoards] = useState([]);
 
   const HandleTitle = async () => {
     if (!title || title === "") {
@@ -27,7 +29,6 @@ const DashHome = () => {
       const data = await res.json();
       if (!res.ok) {
         setPostError(data.message);
-        console.log(data.message);
       } else {
         setTitle("");
         setPostError(null);
@@ -38,17 +39,45 @@ const DashHome = () => {
     }
   };
 
+  const getBoards = async () => {
+    try {
+      const res = await fetch("/api/board?limit=3");
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        setBoards(data.boards);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getBoards();
+  }, []);
+
+  console.log(boards);
+
   return (
-    <div className=" bg-[#F5F5F6]  flex flex-col items-center justify-center p-3 w-full">
-      <div className="text-center">
-        <h3 className="text-xl font-bold">Nothing to show here</h3>
-        <h4 className="text-xl text-gray-400">Create or join new board</h4>
-        <button
-          onClick={() => setShowModal(true)}
-          className="bg-blue-600 mt-4 text-white p-2 rounded-lg"
-        >
-          Create New Board
-        </button>
+    <div className=" bg-[#F5F5F6]  flex flex-col  p-3 w-full">
+      {!boards.length && (
+        <div className="text-center items-center justify-center">
+          <h3 className="text-xl font-bold">Nothing to show here</h3>
+          <h4 className="text-xl text-gray-400">Create or join new board</h4>
+          <button
+            onClick={() => setShowModal(true)}
+            className="bg-blue-600 mt-4 text-white p-2 rounded-lg"
+          >
+            Create New Board
+          </button>
+        </div>
+      )}
+      <div className="mb-3"><h5 className="text-sm font-semibold">Recently viewed(Last 3 Boards)</h5></div>
+      <div className="flex gap-2 flex-wrap">
+        
+        {boards &&
+          boards.map((board) => <DashCard key={board._id} board={board} />)}
       </div>
       <Modal
         show={showModal}
