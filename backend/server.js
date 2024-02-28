@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import authRouter from "./routes/auth.routes.js";
 import boardRouter from "./routes/board.routes.js";
+import taskRouter from "./routes/task.routes.js";
 import connection from "./config/config.js";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/user", authRouter);
 app.use("/api/board", boardRouter);
+app.use("/api/task", taskRouter);
 
 const port = process.env.PORT || 8000;
 app.listen(port, async () => {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Button, Modal, TextInput } from "flowbite-react";
+import { Alert, Button, Modal, Spinner, TextInput } from "flowbite-react";
 import { useSelector } from "react-redux";
 import DashCard from "./DashCard";
 
@@ -9,6 +9,7 @@ const DashHome = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [postError, setPostError] = useState(null);
   const [boards, setBoards] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const HandleTitle = async () => {
     if (!title || title === "") {
@@ -41,12 +42,14 @@ const DashHome = () => {
 
   const getBoards = async () => {
     try {
+      setLoading(true);
       const res = await fetch("/api/board?limit=3");
       const data = await res.json();
       if (!res.ok) {
         console.log(data.message);
       } else {
         setBoards(data.boards);
+        setLoading(false);
       }
     } catch (error) {
       console.log(error);
@@ -58,6 +61,13 @@ const DashHome = () => {
   }, []);
 
   console.log(boards);
+
+  if (loading)
+    return (
+      <div className="flex justify-center item-center w-full min-h-screen">
+        <Spinner  />
+      </div>
+    );
 
   return (
     <div className=" bg-[#F5F5F6]  flex flex-col  p-3 w-full">
@@ -73,9 +83,12 @@ const DashHome = () => {
           </button>
         </div>
       )}
-      <div className="mb-3"><h5 className="text-sm font-semibold">Recently viewed(Last 3 Boards)</h5></div>
+      <div className="mb-3">
+        <h5 className="text-sm font-semibold">
+          Recently viewed(Last 3 Boards)
+        </h5>
+      </div>
       <div className="flex gap-2 flex-wrap">
-        
         {boards &&
           boards.map((board) => <DashCard key={board._id} board={board} />)}
       </div>

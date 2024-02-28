@@ -9,6 +9,7 @@ const DashCard = ({ board }) => {
   const [showModal, setShowModal] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   const [editError, setEditError] = useState(null);
+  const [singleData, setSingleData] = useState(board);
 
   console.log(board.title);
 
@@ -30,6 +31,10 @@ const DashCard = ({ board }) => {
       if (!res.ok) {
         setEditError(data.message);
       } else {
+        setSingleData({
+          ...singleData,
+          title: editedtitle,
+        });
         setShowModal(false);
       }
     } catch (error) {
@@ -37,9 +42,9 @@ const DashCard = ({ board }) => {
     }
   };
   return (
-    <div className="bg-white p-2 rounded-md">
+    <div className="bg-white p-2 rounded-md overflow-hidden w-[350px]">
       <div className="">
-        <h3 className="text-xl font-semibold">{board.title}</h3>
+        <h3 className="text-xl font-semibold truncate">{singleData.title}</h3>
         <p className="text-sm text-gray-400">Owned By {board.name}</p>
       </div>
       <div className="mt-4 flex gap-6">
@@ -75,7 +80,7 @@ const DashCard = ({ board }) => {
         <Modal.Body>
           <div className="flex flex-col gap-2 ">
             <div className="">
-              <p>Create new board</p>
+              <p>Update board Title</p>
               <TextInput
                 value={editedtitle}
                 onChange={(e) => seteditedTitle(e.target.value)}

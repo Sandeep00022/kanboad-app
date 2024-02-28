@@ -31,7 +31,7 @@ const OAuth = () => {
       if (res.ok) {
         console.log("Hello")
         dispatch(signInSuccess(data));
-        navigate("/dashboard");
+        navigate("/dashboard?tab=dash");
       }
     } catch (error) {
       console.log(error);
