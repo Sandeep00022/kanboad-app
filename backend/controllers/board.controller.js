@@ -57,21 +57,37 @@ export const getBoards = async (req, res, next) => {
 };
 
 export const updateBoard = async (req, res, next) => {
+  const { users } = req.body;
   if (!req.params.boardId || !req.params.userId) {
     return next(errorHandler(403, "You are not allowed to update this post"));
   }
   try {
-    const updateBoard = await Board.findByIdAndUpdate(
-      req.params.boardId,
-      {
-        title: req.body.title,
-      },
-      {
-        new: true,
-      }
-    );
+    if (req.body.title) {
+      const updateBoard = await Board.findByIdAndUpdate(
+        req.params.boardId,
+        {
+          title: req.body.title,
+        },
+        {
+          new: true,
+        }
+      );
 
-    res.status(200).json(updateBoard);
+      return res.status(200).json(updateBoard);
+    }
+
+    const board = await Board.findById(req.params.boardId);
+
+    users.forEach(async (userId) => {
+      if (!board.users.includes(userId)) {
+        board.users.push(...users);
+        await board.save();
+
+        return res.status(200).json(board);
+      } else {
+        return next(next(errorHandler(403, "User already invited")));
+      }
+    });
   } catch (error) {
     next(error);
   }

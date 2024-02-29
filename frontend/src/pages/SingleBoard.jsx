@@ -23,6 +23,7 @@ const SingleBoard = () => {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [search, setSearch] = useState("");
   const [userIds, setUserIds] = useState([]);
+  const [userIdsError, setUserIdsError] = useState(null);
 
   const storeUserIds = (id, name) => {
     let payload = {
@@ -40,16 +41,28 @@ const SingleBoard = () => {
   };
 
   const handleIvitedUser = async () => {
+    if (userIds.length == 0) {
+      return setUserIdsError("select user first");
+    }
     try {
-      const res = await fetch(`/api/board/update`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          users: userIds,
-        }),
-      });
+      const res = await fetch(
+        `/api/board/update/${board._id}/${board.createdBy}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            users: userIds.map((user) => user.id),
+          }),
+        }
+      );
+      const data = await res.json();
+      if (!res.ok) {
+        setUserIdsError(data.message);
+      } else {
+        setShowInviteModal(false);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -169,7 +182,7 @@ const SingleBoard = () => {
               <Button color="gray" className="w-full" outline>
                 Cancel
               </Button>
-              <Button className="w-full">Add Task</Button>
+              <Button color="blue" className="w-full">Add Task</Button>
             </div>
           </form>
         </Modal.Body>
@@ -223,6 +236,18 @@ const SingleBoard = () => {
                 </div>
               ))}
           </div>
+          <Button
+            onClick={handleIvitedUser}
+            className="w-full mt-2"
+            color="blue"
+          >
+            Invite Selected Users
+          </Button>
+          {userIdsError && (
+            <Alert className="mt-5" color={"failure"}>
+              {userIdsError}
+            </Alert>
+          )}
         </Modal.Body>
       </Modal>
     </div>
