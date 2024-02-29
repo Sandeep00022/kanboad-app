@@ -92,3 +92,19 @@ export const updateBoard = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getBoardWithUsers = async (req, res, next) => {
+  if (!req.params.boardId || !req.body.userId) {
+    return next(errorHandler(403, "You are not allowed to get users details"));
+  }
+  try {
+    const board = await Board.findById(req.params.boardId).populate({
+      path: "users",
+      select: "_id username gmail",
+    });
+
+    res.status(200).json(board);
+  } catch (error) {
+    next(error);
+  }
+};
