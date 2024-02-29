@@ -7,7 +7,8 @@ import {
   Textarea,
 } from "flowbite-react";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { allTaskSucces, updateTaskSucess } from "../redux/task/taskSlice";
 
 const TaskEditModal = ({ setShowModal, showModal, task }) => {
   const [formError, setFormError] = useState(null);
@@ -17,8 +18,7 @@ const TaskEditModal = ({ setShowModal, showModal, task }) => {
     date: task.dueDate,
   });
 
-  
-
+  const dispatch = useDispatch();
   const { invitedUsers } = useSelector((state) => state.task);
 
   const handlechange = (e) => {
@@ -69,7 +69,8 @@ const TaskEditModal = ({ setShowModal, showModal, task }) => {
           description: "",
           date: "",
         });
-
+        console.log("update", data);
+        dispatch(updateTaskSucess(data));
       }
     } catch (error) {
       console.log(error);

@@ -15,7 +15,11 @@ import { FaPen, FaPlus } from "react-icons/fa";
 import { FiUserPlus } from "react-icons/fi";
 import InviteModal from "../components/InviteModal";
 import TaskCard from "../components/TaskCard";
-import { assignedUsersSuccess } from "../redux/task/taskSlice";
+import {
+  addTaskSuccess,
+  allTaskSucces,
+  assignedUsersSuccess,
+} from "../redux/task/taskSlice";
 
 const SingleBoard = () => {
   const [showInviteModal, setShowInviteModal] = useState(false);
@@ -38,14 +42,16 @@ const SingleBoard = () => {
   let Pending;
   let Done;
 
-  if (tasks.length > 0) {
-    Unassigned = tasks.filter((task) => task.status === "Unassigned");
-    InProgress = tasks.filter((task) => task.status === "In Development");
-    Pending = tasks.filter((task) => task.status === "Pending Review");
-    Done = tasks.filter((task) => task.status === "Done");
+  const { boards, allTask } = useSelector((state) => state.task);
+
+  if (allTask.length > 0) {
+    Unassigned = allTask.filter((task) => task.status === "Unassigned");
+    InProgress = allTask.filter((task) => task.status === "In Development");
+    Pending = allTask.filter((task) => task.status === "Pending Review");
+    Done = allTask.filter((task) => task.status === "Done");
   }
 
-  const { boards } = useSelector((state) => state.task);
+  console.log("all", allTask);
 
   const { id } = useParams();
   const board = boards.find((board) => board._id === id);
@@ -116,6 +122,7 @@ const SingleBoard = () => {
           date: "",
         });
         setTasks([data, ...tasks]);
+        dispatch(addTaskSuccess(data));
       }
     } catch (error) {
       console.log(error);
@@ -130,6 +137,7 @@ const SingleBoard = () => {
         console.log(data.message);
       } else {
         setTasks(data);
+        dispatch(allTaskSucces(data));
       }
     } catch (error) {
       console.log(error);

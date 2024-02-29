@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   boards: [],
   invitedUsers: [],
+  allTask: [],
   error: null,
   loading: false,
 };
@@ -29,9 +30,34 @@ const taskSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
+    allTaskSucces: (state, action) => {
+      state.allTask = action.payload;
+      state.loading = false;
+      state.error = null;
+    },
+    updateTaskSucess: (state, action) => {
+      state.allTask = state.allTask.map((task) =>
+        task._id === action.payload._id ? { ...action.payload } : task
+      );
+      state.loading = false;
+      state.error = null;
+    },
+    addTaskSuccess: (state, action) => {
+      state.allTask = [action.payload, ...state.allTask];
+      state.loading = false;
+      state.error = null;
+    },
   },
 });
 
-export const { taskInFailure, taskInStart, taskInSuccess, assignedUsersSuccess } = taskSlice.actions;
+export const {
+  taskInFailure,
+  taskInStart,
+  taskInSuccess,
+  assignedUsersSuccess,
+  allTaskSucces,
+  updateTaskSucess,
+  addTaskSuccess,
+} = taskSlice.actions;
 
 export default taskSlice.reducer;
