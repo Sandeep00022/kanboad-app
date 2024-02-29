@@ -57,3 +57,24 @@ export const getAllTasks = async (req, res, next) => {
     next(error);
   }
 };
+
+export const editTask = async (req, res, next) => {
+  console.log(req.user.id);
+  try {
+    const task = await Task.findById(req.params.taskId);
+    console.log("createdBy",task.createdBy);
+    if (task.createdBy !== req.user.id) {
+      return next(errorHandler(404, "Not Authorized"));
+    }
+
+    const updatedTask = await Task.findByIdAndUpdate(
+      req.params.taskId,
+      req.body,
+      { new: true }
+    );
+
+    res.status(200).json(updatedTask);
+  } catch (error) {
+    next(error);
+  }
+};

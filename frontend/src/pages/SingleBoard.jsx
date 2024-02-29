@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DashSidebar from "../components/DashSidebar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams, useSearchParams } from "react-router-dom";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import {
@@ -15,6 +15,7 @@ import { FaPen, FaPlus } from "react-icons/fa";
 import { FiUserPlus } from "react-icons/fi";
 import InviteModal from "../components/InviteModal";
 import TaskCard from "../components/TaskCard";
+import { assignedUsersSuccess } from "../redux/task/taskSlice";
 
 const SingleBoard = () => {
   const [showInviteModal, setShowInviteModal] = useState(false);
@@ -29,6 +30,8 @@ const SingleBoard = () => {
     description: "",
     date: "",
   });
+
+  const dispatch = useDispatch();
 
   let Unassigned;
   let InProgress;
@@ -56,6 +59,7 @@ const SingleBoard = () => {
         console.log(data.message);
       } else {
         setInvitedUsers(data.users);
+        dispatch(assignedUsersSuccess(data.users));
         setLoading(false);
       }
     } catch (error) {
@@ -140,8 +144,6 @@ const SingleBoard = () => {
   const handlechange = (e) => {
     settaskFrom({ ...taskForm, [e.target.name]: e.target.value });
   };
-
- 
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">

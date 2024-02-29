@@ -1,8 +1,10 @@
 import { Avatar, Button, Modal, Tooltip } from "flowbite-react";
 import React, { useState } from "react";
+import TaskEditModal from "./TaskEditModal";
 
 const TaskCard = ({ task }) => {
   const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   return (
     <div>
@@ -48,7 +50,14 @@ const TaskCard = ({ task }) => {
                 </p>
               </div>
               <div>
-                <Button className="text-blue-600" color="white">
+                <Button
+                  onClick={() => {
+                    setShowEditModal(true);
+                    setShowModal(false);
+                  }}
+                  className="text-blue-600"
+                  color="white"
+                >
                   Edit task
                 </Button>
               </div>
@@ -85,6 +94,11 @@ const TaskCard = ({ task }) => {
           </div>
         </Modal.Body>
       </Modal>
+      <TaskEditModal
+        showModal={showEditModal}
+        task={task}
+        setShowModal={setShowEditModal}
+      />
     </div>
   );
 };

@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   boards: [],
+  invitedUsers: [],
   error: null,
   loading: false,
 };
@@ -15,7 +16,7 @@ const taskSlice = createSlice({
       state.error = null;
     },
     taskInSuccess: (state, action) => {
-      state.boards =action.payload;
+      state.boards = action.payload;
       state.loading = false;
       state.error = null;
     },
@@ -23,9 +24,14 @@ const taskSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    assignedUsersSuccess: (state, action) => {
+      state.invitedUsers = action.payload;
+      state.loading = false;
+      state.error = null;
+    },
   },
 });
 
-export const { taskInFailure, taskInStart, taskInSuccess } = taskSlice.actions;
+export const { taskInFailure, taskInStart, taskInSuccess, assignedUsersSuccess } = taskSlice.actions;
 
 export default taskSlice.reducer;

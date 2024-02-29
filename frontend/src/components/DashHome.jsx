@@ -39,6 +39,7 @@ const DashHome = () => {
         setPostError(null);
         setShowModal(false);
         setBoards([data, ...boards]);
+        getBoards();
       }
     } catch (error) {
       console.log(error);
@@ -91,10 +92,19 @@ const DashHome = () => {
       )}
       <div className="mb-3">
         <h5 className="text-sm font-semibold">
-          Recently viewed(Last 3 Boards)
+          Recently viewed(Last {boards.length} Boards)
         </h5>
       </div>
       <div className="flex gap-2 flex-wrap">
+        <div className="flex flex-col bg-white p-2 items-center rounded-md overflow-hidden w-[350px]">
+          <h4 className="text-xl text-gray-400">Create or join new board</h4>
+          <button
+            onClick={() => setShowModal(true)}
+            className="bg-blue-600 mt-4  text-white p-2 rounded-lg"
+          >
+            Create New Board
+          </button>
+        </div>
         {boards &&
           boards.map((board) => <DashCard key={board._id} board={board} />)}
       </div>
