@@ -18,10 +18,66 @@ const SingleBoard = () => {
   const { boards } = useSelector((state) => state.task);
   const [showModal, setShowModal] = useState(false);
   const [showInviteModal, setShowInviteModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [taskStatus, setTaskStatus] = useState("");
+  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [search, setSearch] = useState("");
+  const [userIds, setUserIds] = useState([]);
 
+  const storeUserIds = (id, name) => {
+    let payload = {
+      id: id,
+      name: name,
+    };
+
+    if (
+      !userIds.some(
+        (user) => user.id === payload.id && user.name === payload.name
+      )
+    ) {
+      setUserIds([...userIds, payload]);
+    }
+  };
+
+  const handleIvitedUser = async () => {
+    try {
+      const res = await fetch(`/api/board/update`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          users: userIds,
+        }),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(userIds);
   const { id } = useParams();
   const board = boards.find((board) => board._id === id);
+
+  const handleSearchUser = async (query) => {
+    setSearch(query);
+    if (!query) {
+      return;
+    }
+    try {
+      setLoading(true);
+      const res = await fetch(`/api/user?search=${query}`);
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        console.log(data);
+        setSelectedUsers(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
@@ -128,8 +184,44 @@ const SingleBoard = () => {
         <Modal.Header />
         <Modal.Body>
           <div className="flex gap-2">
-            <TextInput className="w-full" placeholder="Invite other users" />
-            <Button color="blue">Search</Button>
+            <TextInput
+              onChange={(e) => handleSearchUser(e.target.value)}
+              className="w-full"
+              placeholder="Invite other users"
+            />
+          </div>
+          <div className="flex gap-2 m-3">
+            {userIds.length &&
+              userIds.map((name) => (
+                <div
+                  className="flex gap-1  p-2 w-[85px] bg-green-600 rounded-lg text-white "
+                  key={name.id}
+                >
+                  <p className="truncate"> {name.name}</p>
+                  <button
+                    onClick={() =>
+                      setUserIds((prev) =>
+                        prev.filter((user) => user.id !== name.id)
+                      )
+                    }
+                    className="hover:text-red-600"
+                  >
+                    X
+                  </button>
+                </div>
+              ))}
+          </div>
+          <div>
+            {selectedUsers &&
+              selectedUsers.map((user) => (
+                <div
+                  className="flex justify-between border border-gray-300 rounded-md mt-1 p-2 hover:bg-blue-400 hover:text-white"
+                  key={user._id}
+                  onClick={() => storeUserIds(user._id, user.username)}
+                >
+                  <p className="line-clamp-2">{user.username}</p>
+                </div>
+              ))}
           </div>
         </Modal.Body>
       </Modal>

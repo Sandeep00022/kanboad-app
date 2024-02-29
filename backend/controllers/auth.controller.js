@@ -71,19 +71,19 @@ export const Logout = (req, res, next) => {
 
 export const searchUser = async (req, res, next) => {
   try {
+   
     const keyword = req.query.search
       ? {
           $or: [
             { username: { $regex: req.query.search, $options: "i" } },
-            { email: { $regex: req.query.search, $ooptions: "i" } },
+            { email: { $regex: req.query.search, $options: "i" } },
           ],
         }
       : {};
 
-    const users = (await User.find(keyword)).findIndex({
-      id: { $ne: req.user._id },
-    });
-
+    const users = await User.find({ ...keyword, _id: { $ne: req.user._id } });
     res.status(200).json(users);
-  } catch (error) {}
+  } catch (error) {
+    next(error);
+  }
 };
