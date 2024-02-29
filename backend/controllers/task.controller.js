@@ -6,17 +6,18 @@ export const createTask = async (req, res, next) => {
     return next(errorHandler(403, "You are not allowed to create tasks"));
   }
   try {
-    const { title, description, dueDate, status, userId, boardId } = req.body;
+    const { title, description, dueDate, status, userId, boardId ,assignedUser} = req.body;
 
-    if (!title || !description || !dueDate || !status) {
+    if (!title || !description || !dueDate ) {
       return next(errorHandler(400, "Please provide all request fields"));
     }
 
     const newTask = await Task({
       title,
-      boardId: req.body.boardId,
-      userId: req.body.userId,
+      boardId,
+      createdBy:userId,
       description,
+      assignedUser,
       dueDate,
       status,
     });

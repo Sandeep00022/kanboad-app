@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DashSidebar from "../components/DashSidebar";
 import { useSelector } from "react-redux";
 import { useParams, useSearchParams } from "react-router-dom";
@@ -16,13 +16,76 @@ import { FiUserPlus } from "react-icons/fi";
 import InviteModal from "../components/InviteModal";
 
 const SingleBoard = () => {
-  const [showModal, setShowModal] = useState(false);
   const [showInviteModal, setShowInviteModal] = useState(false);
+  const [invitedUsers, setInvitedUsers] = useState([]);
+  const [showModal, setShowModal] = useState(false);
   const [taskStatus, setTaskStatus] = useState("");
+  const [formError, setFormError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [taskForm, settaskFrom] = useState({
+    title: "",
+    description: "",
+    date: "",
+  });
   const { boards } = useSelector((state) => state.task);
 
   const { id } = useParams();
   const board = boards.find((board) => board._id === id);
+
+  const getInvitedUsers = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch(`/api/board/${board._id}/${board.createdBy}`);
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        setInvitedUsers(data.users);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const payload = {
+      title: taskForm.title,
+      boardId: board._id,
+      userId: board.createdBy,
+      assignedUser: taskForm.users,
+      description: taskForm.description,
+      dueDate: taskForm.date,
+    };
+    try {
+      const res = await fetch(`/api/task/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+        setFormError(data.message);
+      } else {
+        setShowModal(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getInvitedUsers();
+  }, []);
+
+  const handlechange = (e) => {
+    settaskFrom({ ...taskForm, [e.target.name]: e.target.value });
+  };
+  console.log(taskForm.users);
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
@@ -86,7 +149,7 @@ const SingleBoard = () => {
       >
         <Modal.Header />
         <Modal.Body>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="">
               <p>
                 Add new task to:{" "}
@@ -96,28 +159,56 @@ const SingleBoard = () => {
             <div className="">
               {" "}
               <TextInput
+                value={taskForm.title}
+                name="title"
+                onChange={handlechange}
                 className="mt-2"
                 type="text"
                 placeholder="Enter task title"
               />
               <TextInput
+                value={taskForm.dueDate}
+                onChange={handlechange}
+                name="date"
                 className="mt-2"
-                type="date"
+                type="datetime-local"
                 placeholder="Select deadline"
               />
-              <Select className="mt-2">
+              <Select name="users" onChange={handlechange} className="mt-2">
                 <option value="">Assign to</option>
+                {invitedUsers.length &&
+                  invitedUsers.map((invitedUser) => (
+                    <option value={invitedUser._id} key={invitedUser._id}>
+                      {invitedUser.username}
+                    </option>
+                  ))}
               </Select>
-              <Textarea className="mt-2" placeholder="Enter decription here" />
+              <Textarea
+                value={taskForm.description}
+                name="description"
+                onChange={handlechange}
+                className="mt-2"
+                placeholder="Enter decription here"
+              />
             </div>
             <div className="flex justify-between mt-2 gap-2">
-              <Button color="gray" className="w-full" outline>
+              <Button
+                color="gray"
+                className="w-full"
+                onClick={() => setShowModal(false)}
+                outline
+              >
                 Cancel
               </Button>
-              <Button color="blue" className="w-full">
+              <Button type="submit" color="blue" className="w-full">
                 Add Task
               </Button>
             </div>
+            {formError && (
+              <Alert color="red" className="mt-2">
+                {formError}
+              </Alert>
+            )}
           </form>
         </Modal.Body>
       </Modal>
