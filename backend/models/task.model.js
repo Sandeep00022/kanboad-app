@@ -18,10 +18,11 @@ const taskSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      required:true,
+      required: true,
     },
     assignedUser: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
     status: {
       type: String,

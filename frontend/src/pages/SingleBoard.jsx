@@ -50,14 +50,32 @@ const SingleBoard = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const payload = {
-      title: taskForm.title,
-      boardId: board._id,
-      userId: board.createdBy,
-      assignedUser: taskForm.users,
-      description: taskForm.description,
-      dueDate: taskForm.date,
-    };
+    let payload;
+    if (taskForm.users) {
+      payload = {
+        title: taskForm.title,
+        boardId: board._id,
+        userId: board.createdBy,
+        assignedUser: taskForm.users,
+        description: taskForm.description,
+        dueDate: taskForm.date,
+        status: taskForm.status,
+      };
+    } else {
+      payload = {
+        title: taskForm.title,
+        boardId: board._id,
+        userId: board.createdBy,
+        description: taskForm.description,
+        dueDate: taskForm.date,
+        status: taskForm.status,
+      };
+    }
+
+    if (taskForm.users && !taskForm.status) {
+      return setFormError("PLease Select status");
+    }
+
     try {
       const res = await fetch(`/api/task/create`, {
         method: "POST",
@@ -72,6 +90,26 @@ const SingleBoard = () => {
         setFormError(data.message);
       } else {
         setShowModal(false);
+        setFormError(null);
+        settaskFrom({
+          title: "",
+          description: "",
+          date: "",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const Alltasks = async () => {
+    try {
+      const res = await fetch(`/api/task/${board._id}`);
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        console.log(data);
       }
     } catch (error) {
       console.log(error);
@@ -80,12 +118,13 @@ const SingleBoard = () => {
 
   useEffect(() => {
     getInvitedUsers();
+    Alltasks();
   }, []);
 
   const handlechange = (e) => {
     settaskFrom({ ...taskForm, [e.target.name]: e.target.value });
   };
-  console.log(taskForm.users);
+  console.log(taskForm);
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
@@ -93,7 +132,7 @@ const SingleBoard = () => {
         <DashSidebar />
       </div>
       <div className=" border border-b-red-500 bg-[#F5F5F6] flex flex-col items-center p-3 w-full">
-        <div className=" flex justify-between w-full bg-white">
+        <div className=" flex justify-between p-2 mt-0 rounded w-full bg-white">
           <div className="flex  items-center gap-2">
             <p className="font-semibold">{board.title}</p>
             <Button
@@ -183,6 +222,19 @@ const SingleBoard = () => {
                     </option>
                   ))}
               </Select>
+              {taskForm.users && (
+                <Select
+                  name="status"
+                  value={taskForm.status}
+                  onChange={handlechange}
+                  className="mt-2"
+                >
+                  <option value="">Add status</option>
+                  <option value="In Development">In Development</option>
+                  <option value="Pending Review">Pending Reviews</option>
+                  <option value="Done">Done</option>
+                </Select>
+              )}
               <Textarea
                 value={taskForm.description}
                 name="description"
@@ -195,7 +247,10 @@ const SingleBoard = () => {
               <Button
                 color="gray"
                 className="w-full"
-                onClick={() => setShowModal(false)}
+                onClick={() => {
+                  setShowModal(false);
+                  setFormError(null);
+                }}
                 outline
               >
                 Cancel
