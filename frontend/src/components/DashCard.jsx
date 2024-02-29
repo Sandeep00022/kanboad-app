@@ -4,14 +4,15 @@ import { FaPen } from "react-icons/fa";
 import { FiUserPlus } from "react-icons/fi";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-
+import InviteModal from "./InviteModal";
 
 const DashCard = ({ board }) => {
   const [editedtitle, seteditedTitle] = useState(board.title || "");
-  const [showModal, setShowModal] = useState(false);
+  const [showInviteModal, setShowInviteModal] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
-  const [editError, setEditError] = useState(null);
   const [singleData, setSingleData] = useState(board);
+  const [showModal, setShowModal] = useState(false);
+  const [editError, setEditError] = useState(null);
   const [tab, setTab] = useState("");
 
   const location = useLocation();
@@ -65,7 +66,11 @@ const DashCard = ({ board }) => {
         <div className="flex gap-2">
           {currentUser._id === board.createdBy && (
             <>
-              <Button className="text-blue-700" color="white">
+              <Button
+                className="text-blue-700"
+                onClick={() => setShowInviteModal(true)}
+                color="white"
+              >
                 <FiUserPlus className="mr-2" /> invite
               </Button>
               <Button
@@ -134,6 +139,11 @@ const DashCard = ({ board }) => {
           </div>
         </Modal.Body>
       </Modal>
+      <InviteModal
+        board={board}
+        showModal={showInviteModal}
+        setShowModal={setShowInviteModal}
+      />
     </div>
   );
 };
