@@ -3,7 +3,7 @@ import { Modal, TextInput, Button, Alert, Spinner } from "flowbite-react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-const InviteModal = ({ showModal, setShowModal, board }) => {
+const InviteModal = ({ showModal, setShowModal, board, onget }) => {
   const [userIdsError, setUserIdsError] = useState(null);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -68,6 +68,7 @@ const InviteModal = ({ showModal, setShowModal, board }) => {
         setUserIdsError(data.message);
       } else {
         setShowModal(false);
+        onget();
       }
     } catch (error) {
       console.log(error);

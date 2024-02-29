@@ -82,7 +82,10 @@ export const updateBoard = async (req, res, next) => {
       if (!board.users.includes(userId)) {
         board.users.push(...users);
         await board.save();
-
+        board.populate({
+          path: "users",
+          select: "_id username email profilePicture",
+        });
         return res.status(200).json(board);
       } else {
         return next(next(errorHandler(403, "User already invited")));

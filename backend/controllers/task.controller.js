@@ -46,7 +46,12 @@ export const getAllTasks = async (req, res, next) => {
     const tasks = await Task.find({ boardId: boardId })
       .sort({ updatedAt: sortDirection })
       .skip(startIndex)
-      .limit(limit);
+      .limit(limit)
+      .populate({
+        path: "assignedUser",
+        select: "_id username email profilePicture",
+      });
+
     res.status(200).json(tasks);
   } catch (error) {
     next(error);

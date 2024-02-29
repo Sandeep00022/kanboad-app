@@ -14,6 +14,7 @@ import {
 import { FaPen, FaPlus } from "react-icons/fa";
 import { FiUserPlus } from "react-icons/fi";
 import InviteModal from "../components/InviteModal";
+import TaskCard from "../components/TaskCard";
 
 const SingleBoard = () => {
   const [showInviteModal, setShowInviteModal] = useState(false);
@@ -22,11 +23,25 @@ const SingleBoard = () => {
   const [taskStatus, setTaskStatus] = useState("");
   const [formError, setFormError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [tasks, setTasks] = useState([]);
   const [taskForm, settaskFrom] = useState({
     title: "",
     description: "",
     date: "",
   });
+
+  let Unassigned;
+  let InProgress;
+  let Pending;
+  let Done;
+
+  if (tasks.length > 0) {
+    Unassigned = tasks.filter((task) => task.status === "Unassigned");
+    InProgress = tasks.filter((task) => task.status === "In Development");
+    Pending = tasks.filter((task) => task.status === "Pending Review");
+    Done = tasks.filter((task) => task.status === "Done");
+  }
+
   const { boards } = useSelector((state) => state.task);
 
   const { id } = useParams();
@@ -96,6 +111,7 @@ const SingleBoard = () => {
           description: "",
           date: "",
         });
+        setTasks([data, ...tasks]);
       }
     } catch (error) {
       console.log(error);
@@ -109,7 +125,7 @@ const SingleBoard = () => {
       if (!res.ok) {
         console.log(data.message);
       } else {
-        console.log(data);
+        setTasks(data);
       }
     } catch (error) {
       console.log(error);
@@ -124,14 +140,15 @@ const SingleBoard = () => {
   const handlechange = (e) => {
     settaskFrom({ ...taskForm, [e.target.name]: e.target.value });
   };
-  console.log(taskForm);
+
+ 
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
       <div className="md:w-56">
         <DashSidebar />
       </div>
-      <div className=" border border-b-red-500 bg-[#F5F5F6] flex flex-col items-center p-3 w-full">
+      <div className=" border border-b-red-500 bg-[#F5F5F6] flex flex-col  p-3 w-full">
         <div className=" flex justify-between p-2 mt-0 rounded w-full bg-white">
           <div className="flex  items-center gap-2">
             <p className="font-semibold">{board.title}</p>
@@ -153,16 +170,28 @@ const SingleBoard = () => {
             </Button>
           </div>
         </div>
-        <div className="p-4">
-          <div className="border border-red-500">
-            <div className="flex justify-between items-center gap-[200px] w-full">
+        <div className=" flex gap-4 flex-wrap p-4 ">
+          <div className=" bg-white rounded-lg w-[350px] p-3">
+            <div className="flex justify-between bg-white items-center m-2 gap-[140px]">
               <h3 className="text-sm font-semibold">Unassigned</h3>
-              <div className=" flex gap-2">
-                <h4 className="text-sm font-semibold">6</h4>
+              <div className=" flex gap-2 ">
+                <h4 className="text-sm font-semibold ">{Unassigned?.length}</h4>
                 <button>
                   <BsThreeDotsVertical />
                 </button>
               </div>
+            </div>
+            <div
+              style={{
+                WebkitOverflowScrolling: "touch",
+                scrollbarWidth: "none",
+                msOverflowStyle: "none",
+              }}
+              className="bg-white h-[80vh] overflow-y-auto scrollbar-hide"
+            >
+              {Unassigned?.map((task) => (
+                <TaskCard key={task._id} task={task} />
+              ))}
             </div>
             <Button
               onClick={() => {
@@ -175,9 +204,84 @@ const SingleBoard = () => {
               <FaPlus className="mr-2" /> Add Task
             </Button>
           </div>
-          <div className=""></div>
-          <div className=""></div>
-          <div className=""></div>
+          <div className=" bg-white rounded-lg w-[350px] p-3">
+            <div className="flex justify-between bg-white items-center m-2 gap-[140px]">
+              <h3 className="text-sm font-semibold">In Development</h3>
+              <div className=" flex gap-2">
+                <h4 className="text-sm font-semibold">{InProgress?.length}</h4>
+                <button>
+                  <BsThreeDotsVertical />
+                </button>
+              </div>
+            </div>
+            <div className="bg-white h-[80vh] overflow-y-auto scrollbar-hide">
+              {InProgress?.map((task) => (
+                <TaskCard key={task._id} task={task} />
+              ))}
+            </div>
+            <Button
+              onClick={() => {
+                setTaskStatus("In Development");
+                setShowModal(true);
+              }}
+              color="blue"
+              className="w-full mt-3"
+            >
+              <FaPlus className="mr-2" /> Add Task
+            </Button>
+          </div>
+          <div className="bg-white rounded-lg w-[350px] p-3">
+            <div className="flex justify-between bg-white items-center m-2 gap-[140px]">
+              <h3 className="text-sm font-semibold">Pending Review</h3>
+              <div className=" flex gap-2">
+                <h4 className="text-sm font-semibold">{Pending?.length}</h4>
+                <button>
+                  <BsThreeDotsVertical />
+                </button>
+              </div>
+            </div>
+            <div className="bg-white h-[80vh] overflow-y-auto scrollbar-hide">
+              {Pending?.map((task) => (
+                <TaskCard key={task._id} task={task} />
+              ))}
+            </div>
+            <Button
+              onClick={() => {
+                setTaskStatus("Pending Review");
+                setShowModal(true);
+              }}
+              color="blue"
+              className="w-full mt-3"
+            >
+              <FaPlus className="mr-2" /> Add Task
+            </Button>
+          </div>
+          <div className="bg-white rounded-lg w-[350px] p-3">
+            <div className="flex justify-between bg-white items-center m-2 gap-[140px]">
+              <h3 className="text-sm font-semibold">Done</h3>
+              <div className=" flex gap-2">
+                <h4 className="text-sm font-semibold">{Done?.length}</h4>
+                <button>
+                  <BsThreeDotsVertical />
+                </button>
+              </div>
+            </div>
+            <div className="bg-white h-[80vh] overflow-y-auto scrollbar-hide">
+              {Done?.map((task) => (
+                <TaskCard key={task._id} task={task} />
+              ))}
+            </div>
+            <Button
+              onClick={() => {
+                setTaskStatus("Done");
+                setShowModal(true);
+              }}
+              color="blue"
+              className="w-full mt-3"
+            >
+              <FaPlus className="mr-2" /> Add Task
+            </Button>
+          </div>
         </div>
       </div>
       <Modal
@@ -272,6 +376,7 @@ const SingleBoard = () => {
         showModal={showInviteModal}
         setShowModal={setShowInviteModal}
         board={board}
+        onget={getInvitedUsers}
       />
     </div>
   );

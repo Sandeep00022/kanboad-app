@@ -13,6 +13,8 @@ const DashHome = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
+  // const boardsData = useSelector((state) => state.tasks.boards);
+
   const HandleTitle = async () => {
     if (!title || title === "") {
       setPostError("please enter a title");
@@ -36,6 +38,7 @@ const DashHome = () => {
         setTitle("");
         setPostError(null);
         setShowModal(false);
+        setBoards([data, ...boards]);
       }
     } catch (error) {
       console.log(error);
