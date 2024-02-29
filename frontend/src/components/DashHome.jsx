@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Button, Modal, Spinner, TextInput } from "flowbite-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import DashCard from "./DashCard";
+import { taskInSuccess } from "../redux/task/taskSlice";
 
 const DashHome = () => {
   const [showModal, setShowModal] = useState(null);
@@ -10,6 +11,7 @@ const DashHome = () => {
   const [postError, setPostError] = useState(null);
   const [boards, setBoards] = useState([]);
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const HandleTitle = async () => {
     if (!title || title === "") {
@@ -50,6 +52,7 @@ const DashHome = () => {
       } else {
         setBoards(data.boards);
         setLoading(false);
+        dispatch(taskInSuccess(data.boards));
       }
     } catch (error) {
       console.log(error);
@@ -65,7 +68,7 @@ const DashHome = () => {
   if (loading)
     return (
       <div className="flex justify-center item-center w-full min-h-screen">
-        <Spinner  />
+        <Spinner />
       </div>
     );
 

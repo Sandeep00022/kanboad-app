@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import DashCard from "./DashCard";
 import { Spinner } from "flowbite-react";
+import { useDispatch } from "react-redux";
+import { taskInSuccess } from "../redux/task/taskSlice";
 
 const DashBoards = () => {
   const [boards, setBoards] = useState([]);
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const getBoards = async () => {
     try {
@@ -15,6 +18,7 @@ const DashBoards = () => {
         console.log(data.message);
       } else {
         setBoards(data);
+        dispatch(taskInSuccess(data.boards));
         setLoading(false);
       }
     } catch (error) {

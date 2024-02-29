@@ -1,8 +1,10 @@
 import { Alert, Button, Modal, TextInput } from "flowbite-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaPen } from "react-icons/fa";
 import { FiUserPlus } from "react-icons/fi";
 import { useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+
 
 const DashCard = ({ board }) => {
   const [editedtitle, seteditedTitle] = useState(board.title || "");
@@ -10,8 +12,20 @@ const DashCard = ({ board }) => {
   const { currentUser } = useSelector((state) => state.user);
   const [editError, setEditError] = useState(null);
   const [singleData, setSingleData] = useState(board);
+  const [tab, setTab] = useState("");
 
-  console.log(board.title);
+  const location = useLocation();
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const tabFromUrl = urlParams.get("tab");
+
+    if (tabFromUrl) {
+      setTab(tabFromUrl);
+    }
+  }, [location.search]);
+
+  const navigate = useNavigate();
 
   const handleEditTitle = async () => {
     try {
@@ -65,7 +79,11 @@ const DashCard = ({ board }) => {
           )}
         </div>
         <div>
-          <Button className="text-blue-700" color="white">
+          <Button
+            onClick={() => navigate(`/dashboard/${board._id}`)}
+            className="text-blue-700"
+            color="white"
+          >
             Open
           </Button>
         </div>

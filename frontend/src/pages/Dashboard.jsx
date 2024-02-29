@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import DashProfile from "../components/DashProfile";
 import DashBoards from "../components/DashBoards";
 import DashHome from "../components/DashHome";
+import SingleBoard from "./SingleBoard";
 
 const Dashboard = () => {
   const location = useLocation();

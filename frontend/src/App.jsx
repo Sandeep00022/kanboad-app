@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard";
 
 import Header from "./components/Header";
 import PrivateRoute from "./components/PrivateRoute";
+import SingleBoard from "./pages/SingleBoard";
 
 const App = () => {
   return (
@@ -13,7 +14,8 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route element={<PrivateRoute />}>
-          <Route path="/dashboard" element={<Dashboard/>} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard/:id" element={<SingleBoard />} />
         </Route>
       </Routes>
     </>
