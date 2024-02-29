@@ -11,11 +11,11 @@ export const google = async (req, res, next) => {
       const token = jwt.sign(
         {
           id: user._id,
-          name:name,
+          name: name,
         },
         process.env.JWTSECRET
       );
-  console.log(token)
+      console.log(token);
       const { password, ...rest } = user._doc;
       res
         .status(200)
@@ -40,11 +40,11 @@ export const google = async (req, res, next) => {
       const token = jwt.sign(
         {
           id: newUser._id,
-          name:name,
+          name: name,
         },
         process.env.JWTSECRET
       );
-        
+
       const { password, ...rest } = newUser._doc;
       res
         .status(200)
@@ -67,4 +67,23 @@ export const Logout = (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+export const searchUser = async (req, res, next) => {
+  try {
+    const keyword = req.query.search
+      ? {
+          $or: [
+            { username: { $regex: req.query.search, $options: "i" } },
+            { email: { $regex: req.query.search, $ooptions: "i" } },
+          ],
+        }
+      : {};
+
+    const users = (await User.find(keyword)).findIndex({
+      id: { $ne: req.user._id },
+    });
+
+    res.status(200).json(users);
+  } catch (error) {}
 };
