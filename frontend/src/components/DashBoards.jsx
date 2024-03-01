@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import DashCard from "./DashCard";
 import { Spinner } from "flowbite-react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { taskInSuccess } from "../redux/task/taskSlice";
 
 const DashBoards = () => {
-  const [boards, setBoards] = useState([]);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const { boards } = useSelector((state) => state.task);
 
   const getBoards = async () => {
     try {
@@ -17,7 +17,6 @@ const DashBoards = () => {
       if (!res.ok) {
         console.log(data.message);
       } else {
-        setBoards(data);
         dispatch(taskInSuccess(data.boards));
         setLoading(false);
       }
@@ -45,10 +44,8 @@ const DashBoards = () => {
         </h5>
       </div>
       <div className="flex gap-2 flex-wrap">
-        {boards.boards &&
-          boards.boards.map((board) => (
-            <DashCard key={board._id} board={board} />
-          ))}
+        {boards &&
+          boards.map((board) => <DashCard key={board._id} board={board} />)}
       </div>
     </div>
   );

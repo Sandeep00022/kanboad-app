@@ -5,7 +5,10 @@ import { FiUserPlus } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import InviteModal from "./InviteModal";
-import { updateBoardSuccess } from "../redux/task/taskSlice";
+import {
+  deleteBoardSuccess,
+  updateBoardSuccess,
+} from "../redux/task/taskSlice";
 
 const DashCard = ({ board }) => {
   const [editedtitle, seteditedTitle] = useState(board.title || "");
@@ -60,6 +63,28 @@ const DashCard = ({ board }) => {
       console.log(error);
     }
   };
+
+  const handleDeleteBoard = async () => {
+    try {
+      const res = await fetch(
+        `api/board/delete/${board._id}/${currentUser._id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        console.log("deletedData",data)
+        dispatch(deleteBoardSuccess(data));
+        setShowDeleteModal(false)
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="bg-white p-2 rounded-md overflow-hidden  ">
       <div className="">
@@ -159,6 +184,8 @@ const DashCard = ({ board }) => {
           </div>
         </Modal.Body>
       </Modal>
+
+      {/* delete board modal */}
       <Modal
         show={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
@@ -179,7 +206,11 @@ const DashCard = ({ board }) => {
               >
                 Cancel
               </Button>
-              <Button className="w-full" color="red">
+              <Button
+                onClick={() => handleDeleteBoard(board._id)}
+                className="w-full"
+                color="red"
+              >
                 Yes,Delete
               </Button>
             </div>

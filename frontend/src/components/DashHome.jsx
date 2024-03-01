@@ -9,11 +9,10 @@ const DashHome = () => {
   const [title, setTitle] = useState("");
   const { currentUser } = useSelector((state) => state.user);
   const [postError, setPostError] = useState(null);
-  const [boards, setBoards] = useState([]);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
-  // const boardsData = useSelector((state) => state.tasks.boards);
+  const { boards } = useSelector((state) => state.task);
 
   const HandleTitle = async () => {
     if (!title || title === "") {
@@ -39,7 +38,6 @@ const DashHome = () => {
         setPostError(null);
         setShowModal(false);
         dispatch(createBoardSuccess(data));
-        setBoards([data, ...boards]);
       }
     } catch (error) {
       console.log(error);
@@ -54,7 +52,6 @@ const DashHome = () => {
       if (!res.ok) {
         console.log(data.message);
       } else {
-        setBoards(data.boards);
         setLoading(false);
         dispatch(taskInSuccess(data.boards));
       }
@@ -106,7 +103,7 @@ const DashHome = () => {
           </button>
         </div>
         {boards &&
-          boards.map((board) => <DashCard key={board._id} board={board} />)}
+          boards?.map((board) => <DashCard key={board._id} board={board} />)}
       </div>
       <Modal
         show={showModal}

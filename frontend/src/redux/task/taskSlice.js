@@ -66,6 +66,13 @@ const taskSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
+    deleteBoardSuccess:(state, action) => {
+      state.boards = state.boards.filter(
+        (board) => board._id !== action.payload._id
+      );
+      state.loading = false;
+      state.error = null;
+    },
   },
 });
 
@@ -80,6 +87,7 @@ export const {
   deleteTaskSuccess,
   updateBoardSuccess,
   createBoardSuccess,
+  deleteBoardSuccess
 } = taskSlice.actions;
 
 export default taskSlice.reducer;
