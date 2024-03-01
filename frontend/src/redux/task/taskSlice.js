@@ -54,6 +54,18 @@ const taskSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
+    updateBoardSuccess: (state, action) => {
+      state.boards = state.boards.map((board) =>
+        board._id === action.payload._id ? {...action.payload } : board
+      );
+      state.loading = false;
+      state.error = null;
+    },
+    createBoardSuccess: (state, action) => {
+      state.boards = [action.payload, ...state.boards];
+      state.loading = false;
+      state.error = null;
+    },
   },
 });
 
@@ -66,6 +78,8 @@ export const {
   updateTaskSucess,
   addTaskSuccess,
   deleteTaskSuccess,
+  updateBoardSuccess,
+  createBoardSuccess,
 } = taskSlice.actions;
 
 export default taskSlice.reducer;

@@ -21,10 +21,12 @@ import {
   assignedUsersSuccess,
 } from "../redux/task/taskSlice";
 import { Droppable } from "react-beautiful-dnd";
+import BoardEditModal from "../components/BoardEditModal";
 
 const SingleBoard = () => {
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [invitedUsers, setInvitedUsers] = useState([]);
+  const [showBoardModal, setShowBoardModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [taskStatus, setTaskStatus] = useState("");
   const [formError, setFormError] = useState(null);
@@ -44,14 +46,14 @@ const SingleBoard = () => {
   let Done;
 
   const { boards, allTask } = useSelector((state) => state.task);
-
+  const { currentUser } = useSelector((state) => state.user);
   if (allTask.length > 0) {
     Unassigned = allTask.filter((task) => task.status === "Unassigned");
     InProgress = allTask.filter((task) => task.status === "In Development");
     Pending = allTask.filter((task) => task.status === "Pending Review");
     Done = allTask.filter((task) => task.status === "Done");
   }
-
+  console.log("boards", boards);
   const { id } = useParams();
   const board = boards.find((board) => board._id === id);
 
@@ -172,7 +174,7 @@ const SingleBoard = () => {
           <div className="">
             <Button
               className="text-blue-700"
-              onClick={() => setShowModal(true)}
+              onClick={() => setShowBoardModal(true)}
               color="white"
             >
               <FaPen className="mr-2" /> Edit board
@@ -209,16 +211,18 @@ const SingleBoard = () => {
                 </div>
               )}
             </Droppable>
-            <Button
-              onClick={() => {
-                setTaskStatus("Unassigned");
-                setShowModal(true);
-              }}
-              color="blue"
-              className="w-full mt-3"
-            >
-              <FaPlus className="mr-2" /> Add Task
-            </Button>
+            {board.createdBy === currentUser._id && (
+              <Button
+                onClick={() => {
+                  setTaskStatus("Unassigned");
+                  setShowModal(true);
+                }}
+                color="blue"
+                className="w-full mt-3"
+              >
+                <FaPlus className="mr-2" /> Add Task
+              </Button>
+            )}
           </div>
           <div className=" bg-white rounded-lg w-[350px] p-3">
             <div className="flex justify-between bg-white items-center m-2 gap-[140px]">
@@ -249,7 +253,7 @@ const SingleBoard = () => {
                 </div>
               )}
             </Droppable>
-
+            {board.createdBy === currentUser._id && (
             <Button
               onClick={() => {
                 setTaskStatus("In Development");
@@ -260,6 +264,7 @@ const SingleBoard = () => {
             >
               <FaPlus className="mr-2" /> Add Task
             </Button>
+            )}
           </div>
           <div className="bg-white rounded-lg w-[350px] p-3">
             <div className="flex justify-between bg-white items-center m-2 gap-[140px]">
@@ -290,6 +295,7 @@ const SingleBoard = () => {
                 </div>
               )}
             </Droppable>
+            {board.createdBy === currentUser._id && (
             <Button
               onClick={() => {
                 setTaskStatus("Pending Review");
@@ -300,6 +306,7 @@ const SingleBoard = () => {
             >
               <FaPlus className="mr-2" /> Add Task
             </Button>
+            )}
           </div>
           <div className="bg-white rounded-lg w-[350px] p-3">
             <div className="flex justify-between bg-white items-center m-2 gap-[140px]">
@@ -330,6 +337,7 @@ const SingleBoard = () => {
                 </div>
               )}
             </Droppable>
+            {board.createdBy === currentUser._id && (
             <Button
               onClick={() => {
                 setTaskStatus("Done");
@@ -340,6 +348,7 @@ const SingleBoard = () => {
             >
               <FaPlus className="mr-2" /> Add Task
             </Button>
+            )}
           </div>
         </div>
       </div>
@@ -436,6 +445,11 @@ const SingleBoard = () => {
         setShowModal={setShowInviteModal}
         board={board}
         onget={getInvitedUsers}
+      />
+      <BoardEditModal
+        showModal={showBoardModal}
+        setShowModal={setShowBoardModal}
+        board={board}
       />
     </div>
   );

@@ -53,44 +53,58 @@ export const getBoards = async (req, res, next) => {
       totalBoards,
       lastMonthBoards,
     });
-  } catch (error) {}
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const updateBoard = async (req, res, next) => {
   const { users } = req.body;
-  if (!req.params.boardId || !req.params.userId) {
+  const { boardId, userId } = req.params;
+
+  if (!boardId || !userId) {
     return next(errorHandler(403, "You are not allowed to update this post"));
   }
-  try {
-    if (req.body.title) {
-      const updateBoard = await Board.findByIdAndUpdate(
-        req.params.boardId,
-        {
-          title: req.body.title,
-        },
-        {
-          new: true,
-        }
-      );
 
-      return res.status(200).json(updateBoard);
+  try {
+    let board = await Board.findById(boardId);
+
+    if (!board) {
+      return next(errorHandler(404, "Board not found"));
     }
 
-    const board = await Board.findById(req.params.boardId);
+    // Update title if provided
+    if (req.body.title && !users) {
+      const updatedBoard = await Board.findByIdAndUpdate(
+        boardId,
+        { title: req.body.title },
+        { new: true } 
+      );
 
-    users.forEach(async (userId) => {
-      if (!board.users.includes(userId)) {
-        board.users.push(...users);
-        await board.save();
-        board.populate({
-          path: "users",
-          select: "_id username email profilePicture",
-        });
-        return res.status(200).json(board);
-      } else {
-        return next(next(errorHandler(403, "User already invited")));
+      if (!updatedBoard) {
+        return next(errorHandler(404, "Board not found"));
       }
+
+      return res.status(200).json(updatedBoard);
+    }
+
+    // Update users list
+    for (const userId of users) {
+      if (!board.users.includes(userId)) {
+        board.users.push(userId);
+      } else {
+        return next(errorHandler(403, "User already invited"));
+      }
+    }
+
+    board = await board.save();
+
+    await board.populate({
+      path: "users",
+      select: "_id username email profilePicture",
     });
+
+    return res.status(200).json(board);
   } catch (error) {
     next(error);
   }

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Alert, Button, Modal, Spinner, TextInput } from "flowbite-react";
 import { useDispatch, useSelector } from "react-redux";
 import DashCard from "./DashCard";
-import { taskInSuccess } from "../redux/task/taskSlice";
+import { createBoardSuccess, taskInSuccess } from "../redux/task/taskSlice";
 
 const DashHome = () => {
   const [showModal, setShowModal] = useState(null);
@@ -38,8 +38,8 @@ const DashHome = () => {
         setTitle("");
         setPostError(null);
         setShowModal(false);
+        dispatch(createBoardSuccess(data));
         setBoards([data, ...boards]);
-        getBoards();
       }
     } catch (error) {
       console.log(error);

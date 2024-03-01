@@ -2,19 +2,22 @@ import { Alert, Button, Modal, TextInput } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { FaPen } from "react-icons/fa";
 import { FiUserPlus } from "react-icons/fi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import InviteModal from "./InviteModal";
+import { updateBoardSuccess } from "../redux/task/taskSlice";
 
 const DashCard = ({ board }) => {
   const [editedtitle, seteditedTitle] = useState(board.title || "");
   const [showInviteModal, setShowInviteModal] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   const [singleData, setSingleData] = useState(board);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [editError, setEditError] = useState(null);
   const [tab, setTab] = useState("");
 
+  const dispatch = useDispatch();
   const location = useLocation();
 
   useEffect(() => {
@@ -50,6 +53,7 @@ const DashCard = ({ board }) => {
           ...singleData,
           title: editedtitle,
         });
+        dispatch(updateBoardSuccess(data));
         setShowModal(false);
       }
     } catch (error) {
@@ -57,10 +61,12 @@ const DashCard = ({ board }) => {
     }
   };
   return (
-    <div className="bg-white p-2 rounded-md overflow-hidden w-[350px]">
+    <div className="bg-white p-2 rounded-md overflow-hidden  ">
       <div className="">
         <h3 className="text-xl font-semibold truncate">{singleData.title}</h3>
-        <p className="text-sm text-gray-400">Owned by { currentUser._id === board.createdBy?"you": board.name}</p>
+        <p className="text-sm text-gray-400">
+          Owned by {currentUser._id === board.createdBy ? "you" : board.name}
+        </p>
       </div>
       <div className="mt-4 flex gap-6">
         <div className="flex gap-2">
@@ -84,13 +90,27 @@ const DashCard = ({ board }) => {
           )}
         </div>
         <div>
-          <Button
-            onClick={() => navigate(`/dashboard/${board._id}`)}
-            className="text-blue-700"
-            color="white"
-          >
-            Open
-          </Button>
+          {(currentUser._id === board.createdBy ||
+            board.users.includes(currentUser._id)) && (
+            <Button
+              onClick={() => navigate(`/dashboard/${board._id}`)}
+              className="text-blue-700"
+              color="white"
+            >
+              Open
+            </Button>
+          )}
+        </div>
+        <div>
+          {currentUser._id === board.createdBy && (
+            <Button
+              onClick={() => setShowDeleteModal(true)}
+              className="text-red-500"
+              color="white"
+            >
+              X
+            </Button>
+          )}
         </div>
       </div>
       <Modal
@@ -135,6 +155,33 @@ const DashCard = ({ board }) => {
                   {editError}
                 </Alert>
               )}
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
+      <Modal
+        show={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        popup
+        size="md"
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <div className="text-md font-semibold">
+              Are you sure you want to Delete this board?
+            </div>
+            <div className="flex gap-2 justify-between mt-3">
+              <Button
+                className="w-full"
+                color="blue"
+                onClick={() => setShowDeleteModal(false)}
+              >
+                Cancel
+              </Button>
+              <Button className="w-full" color="red">
+                Yes,Delete
+              </Button>
             </div>
           </div>
         </Modal.Body>
