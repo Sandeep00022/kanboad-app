@@ -22,6 +22,7 @@ const DashHome = () => {
     try {
       const res = await fetch(`https://kanboad-app-1.onrender.com/api/board/create`, {
         method: "POST",
+        credentials:"include",
         headers: {
           "Content-Type": "application/json",
         },

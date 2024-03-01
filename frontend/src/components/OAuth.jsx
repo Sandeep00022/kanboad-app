@@ -22,7 +22,7 @@ const OAuth = () => {
         `https://kanboad-app-1.onrender.com/api/user/google`,
         {
           method: "POST",
-          credentials: "include",
+          credentials:"include",
           headers: {
             "Content-Type": "application/json",
           },
