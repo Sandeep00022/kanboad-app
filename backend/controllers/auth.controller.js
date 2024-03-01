@@ -19,7 +19,7 @@ export const google = async (req, res, next) => {
       const { password, ...rest } = user._doc;
       res
         .status(200)
-        .cookie("access_token", token, { httpOnly: true })
+        .cookie("access_token", token, { httpOnly: true, path: "/" })
         .json(rest);
     } else {
       const generatePassword =
@@ -71,7 +71,6 @@ export const Logout = (req, res, next) => {
 
 export const searchUser = async (req, res, next) => {
   try {
-   
     const keyword = req.query.search
       ? {
           $or: [
