@@ -1,5 +1,5 @@
-import React from "react";
-import { Button } from "flowbite-react";
+import React, { useState } from "react";
+import { Button, Spinner } from "flowbite-react";
 import { FaGoogle } from "react-icons/fa";
 import { GoogleAuthProvider, signInWithPopup, getAuth } from "firebase/auth";
 import { app } from "../firebase";
@@ -7,11 +7,13 @@ import { useDispatch } from "react-redux";
 import { signInSuccess } from "../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
 const OAuth = () => {
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const auth = getAuth(app);
   const navigate = useNavigate();
 
   const handleGoogleClick = async () => {
+    setLoading(true);
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({ propmt: "select_account" });
     try {
@@ -28,11 +30,14 @@ const OAuth = () => {
         }),
       });
       const data = await res.json();
+     
       if (res.ok) {
-        console.log("Hello")
+        console.log("Hello");
         dispatch(signInSuccess(data));
         navigate("/dashboard?tab=dash");
+        setLoading(false)
       }
+      setLoading(false)
     } catch (error) {
       console.log(error);
     }
@@ -45,7 +50,7 @@ const OAuth = () => {
         gradientDuoTone={"purpleToBlue"}
       >
         <FaGoogle className="mr-2" />
-        Continue with google
+       {loading? <Spinner/> : " Continue with google" }
       </Button>
     </div>
   );

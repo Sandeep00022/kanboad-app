@@ -159,7 +159,7 @@ const SingleBoard = () => {
       <div className="md:w-56">
         <DashSidebar />
       </div>
-      <div className=" border border-b-red-500 bg-[#F5F5F6] flex flex-col  p-3 w-full">
+      <div className="  bg-[#F5F5F6] flex flex-col  p-3 w-full">
         <div className=" flex justify-between p-2 mt-0 rounded w-full bg-white">
           <div className="flex  items-center gap-2">
             <p className="font-semibold">{board.title}</p>
@@ -254,16 +254,16 @@ const SingleBoard = () => {
               )}
             </Droppable>
             {board.createdBy === currentUser._id && (
-            <Button
-              onClick={() => {
-                setTaskStatus("In Development");
-                setShowModal(true);
-              }}
-              color="blue"
-              className="w-full mt-3"
-            >
-              <FaPlus className="mr-2" /> Add Task
-            </Button>
+              <Button
+                onClick={() => {
+                  setTaskStatus("In Development");
+                  setShowModal(true);
+                }}
+                color="blue"
+                className="w-full mt-3"
+              >
+                <FaPlus className="mr-2" /> Add Task
+              </Button>
             )}
           </div>
           <div className="bg-white rounded-lg w-[350px] p-3">
@@ -296,16 +296,16 @@ const SingleBoard = () => {
               )}
             </Droppable>
             {board.createdBy === currentUser._id && (
-            <Button
-              onClick={() => {
-                setTaskStatus("Pending Review");
-                setShowModal(true);
-              }}
-              color="blue"
-              className="w-full mt-3"
-            >
-              <FaPlus className="mr-2" /> Add Task
-            </Button>
+              <Button
+                onClick={() => {
+                  setTaskStatus("Pending Review");
+                  setShowModal(true);
+                }}
+                color="blue"
+                className="w-full mt-3"
+              >
+                <FaPlus className="mr-2" /> Add Task
+              </Button>
             )}
           </div>
           <div className="bg-white rounded-lg w-[350px] p-3">
@@ -338,16 +338,16 @@ const SingleBoard = () => {
               )}
             </Droppable>
             {board.createdBy === currentUser._id && (
-            <Button
-              onClick={() => {
-                setTaskStatus("Done");
-                setShowModal(true);
-              }}
-              color="blue"
-              className="w-full mt-3"
-            >
-              <FaPlus className="mr-2" /> Add Task
-            </Button>
+              <Button
+                onClick={() => {
+                  setTaskStatus("Done");
+                  setShowModal(true);
+                }}
+                color="blue"
+                className="w-full mt-3"
+              >
+                <FaPlus className="mr-2" /> Add Task
+              </Button>
             )}
           </div>
         </div>

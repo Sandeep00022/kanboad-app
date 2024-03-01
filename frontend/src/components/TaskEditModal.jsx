@@ -15,6 +15,7 @@ const TaskEditModal = ({ setShowModal, showModal, task }) => {
   const [taskForm, setTaskFrom] = useState({
     title: task.title,
     description: task.description,
+    status: task.status,
     date: task.dueDate,
   });
 
@@ -28,6 +29,13 @@ const TaskEditModal = ({ setShowModal, showModal, task }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     let payload;
+    if (
+      task.status === "Unassigned" &&
+      taskForm.users &&
+      taskForm.status === "Unassigned"
+    ) {
+      return setFormError("Please select a status other than 'Unassigned'.");
+    }
     if (taskForm.users) {
       payload = {
         title: taskForm.title,
@@ -102,7 +110,7 @@ const TaskEditModal = ({ setShowModal, showModal, task }) => {
                 placeholder="Enter task title"
               />
               <TextInput
-                value={taskForm.dueDate}
+                value={taskForm.date}
                 onChange={handlechange}
                 name="date"
                 className="mt-2"
@@ -120,7 +128,7 @@ const TaskEditModal = ({ setShowModal, showModal, task }) => {
               </Select>
               <Select
                 name="status"
-                value={task.status}
+                value={taskForm.status}
                 onChange={handlechange}
                 className="mt-2"
               >
