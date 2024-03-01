@@ -66,7 +66,7 @@ export const editTask = async (req, res, next) => {
   console.log(req.user.id);
   try {
     const task = await Task.findById(req.params.taskId);
-    console.log("createdBy", task.createdBy);
+
     if (task.createdBy !== req.user.id) {
       return next(errorHandler(404, "Not Authorized"));
     }
@@ -77,7 +77,27 @@ export const editTask = async (req, res, next) => {
       { new: true }
     );
 
-    res.status(200).json(updatedTask);
+    const populatedTask = await Task.findById(updatedTask._id).populate({
+      path: "assignedUser",
+      select: "_id username email profilePicture",
+    });
+
+    res.status(200).json(populatedTask);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteTask = async (req, res, next) => {
+  try {
+    const task = await Task.findById(req.params.taskId);
+
+    if (task.createdBy !== req.user.id) {
+      return next(errorHandler(404, "Not Authorized"));
+    }
+
+    const deletedTask = await Task.findByIdAndDelete(req.params.taskId);
+    res.status(200).json(deletedTask);
   } catch (error) {
     next(error);
   }

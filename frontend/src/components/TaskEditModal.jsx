@@ -39,14 +39,11 @@ const TaskEditModal = ({ setShowModal, showModal, task }) => {
     } else {
       payload = {
         title: taskForm.title,
+        assignedUser: null,
         description: taskForm.description,
         dueDate: taskForm.date,
         status: taskForm.status,
       };
-    }
-
-    if (taskForm.users && !taskForm.status) {
-      return setFormError("PLease Select status");
     }
 
     try {
@@ -123,7 +120,7 @@ const TaskEditModal = ({ setShowModal, showModal, task }) => {
               </Select>
               <Select
                 name="status"
-                value={taskForm.status}
+                value={task.status}
                 onChange={handlechange}
                 className="mt-2"
               >

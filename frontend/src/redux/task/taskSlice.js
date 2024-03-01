@@ -47,6 +47,13 @@ const taskSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
+    deleteTaskSuccess: (state, action) => {
+      state.allTask = state.allTask.filter(
+        (task) => task._id !== action.payload
+      );
+      state.loading = false;
+      state.error = null;
+    },
   },
 });
 
@@ -58,6 +65,7 @@ export const {
   allTaskSucces,
   updateTaskSucess,
   addTaskSuccess,
+  deleteTaskSuccess,
 } = taskSlice.actions;
 
 export default taskSlice.reducer;

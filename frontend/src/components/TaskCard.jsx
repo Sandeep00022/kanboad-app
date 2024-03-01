@@ -2,14 +2,40 @@ import { Avatar, Button, Modal, Tooltip } from "flowbite-react";
 import React, { useState } from "react";
 import TaskEditModal from "./TaskEditModal";
 import { Draggable } from "react-beautiful-dnd";
+import { useDispatch } from "react-redux";
+import { deleteTaskSuccess } from "../redux/task/taskSlice";
 
 const TaskCard = ({ task, index }) => {
+  console.log(index);
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
 
+  const dispatch = useDispatch()
+
+  const deleteTask = async (taskId) => {
+    try {
+      const res = await fetch(`/api/task/deleteTask/${taskId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        console.log(data);
+        dispatch(deleteTaskSuccess(taskId))
+        setShowModal(false)
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
-      <Draggable draggableId={task._id.toString()} index={index}>
+      <Draggable draggableId={task._id} index={index}>
         {(provided) => (
           <div
             onClick={() => setShowModal(true)}
@@ -99,6 +125,13 @@ const TaskCard = ({ task, index }) => {
               </label>
               <p className="text-xs">{task.description}</p>
             </div>
+            <Button
+              onClick={() => deleteTask(task._id)}
+              className="w-full mt-2"
+              color="red"
+            >
+              Delete Task
+            </Button>
           </div>
         </Modal.Body>
       </Modal>

@@ -27,15 +27,13 @@ const App = () => {
 
   const dispatch = useDispatch();
 
-  const onDragEnd = (result) => {
+  const onDragEnd = async (result) => {
     const { source, destination } = result;
 
-    // Check if the task was dropped outside a droppable area
     if (!destination) {
       return;
     }
 
-    // Check if the task was dropped in the same position
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
@@ -43,10 +41,8 @@ const App = () => {
       return;
     }
 
-    // Get the dragged task
-    const draggedTask = { ...allTask[source.index] }
+    const draggedTask = { ...allTask[source.index] };
 
-    // Determine the new status based on the destination droppableId
     let newStatus;
     switch (destination.droppableId) {
       case "unassigned":
@@ -55,8 +51,8 @@ const App = () => {
       case "in-development":
         newStatus = "In Development";
         break;
-      case "pending":
-        newStatus = "pending-review";
+      case "pending-review":
+        newStatus = "Pending Review";
         break;
       case "done":
         newStatus = "Done";
@@ -66,8 +62,36 @@ const App = () => {
     }
 
     draggedTask.status = newStatus;
+    console.log(draggedTask._id);
+    await updateTaskStatus(draggedTask._id, newStatus);
+  };
 
-    dispatch(updateTaskSucess(draggedTask));
+  const updateTaskStatus = async (id, newStatus) => {
+    let payload;
+    if (newStatus === "Unassigned") {
+      payload = {
+        status: newStatus,
+        assignedUser: null,
+      };
+    } else {
+      payload = {
+        status: newStatus,
+      };
+    }
+
+    try {
+      const res = await fetch(`/api/task/editTask/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      dispatch(updateTaskSucess(data));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
