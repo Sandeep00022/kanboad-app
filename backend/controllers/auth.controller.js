@@ -19,7 +19,7 @@ export const google = async (req, res, next) => {
       const { password, ...rest } = user._doc;
       res
         .status(200)
-        .cookie("access_token", token, { httpOnly: true, path: "/" })
+        .cookie("access_token", token, { httpOnly: true,sameSite:"none", path: "/" })
         .json(rest);
     } else {
       const generatePassword =
@@ -50,6 +50,8 @@ export const google = async (req, res, next) => {
         .status(200)
         .cookie("access_token", token, {
           httpOnly: true,
+          sameSite:"none",
+          path: "/" 
         })
         .json(rest);
     }

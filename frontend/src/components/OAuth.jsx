@@ -18,26 +18,30 @@ const OAuth = () => {
     provider.setCustomParameters({ propmt: "select_account" });
     try {
       const resultFromGoogle = await signInWithPopup(auth, provider);
-      const res = await fetch(`https://kanboad-app-1.onrender.com/api/user/google`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: resultFromGoogle.user.displayName,
-          email: resultFromGoogle.user.email,
-          googlePhotoUrl: resultFromGoogle.user.photoURL,
-        }),
-      });
+      const res = await fetch(
+        `https://kanboad-app-1.onrender.com/api/user/google`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: resultFromGoogle.user.displayName,
+            email: resultFromGoogle.user.email,
+            googlePhotoUrl: resultFromGoogle.user.photoURL,
+          }),
+        }
+      );
       const data = await res.json();
-     
+
       if (res.ok) {
         console.log("Hello");
         dispatch(signInSuccess(data));
         navigate("/dashboard?tab=dash");
-        setLoading(false)
+        setLoading(false);
       }
-      setLoading(false)
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -50,7 +54,7 @@ const OAuth = () => {
         gradientDuoTone={"purpleToBlue"}
       >
         <FaGoogle className="mr-2" />
-       {loading? <Spinner/> : " Continue with google" }
+        {loading ? <Spinner /> : " Continue with google"}
       </Button>
     </div>
   );
