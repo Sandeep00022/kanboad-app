@@ -10,7 +10,8 @@ dotenv.config();
 
 const app = express();
 app.use(cors({
-  origin: "*"
+  origin: true,
+  credentials: true
 }));
 app.use(express.json());
 app.use(cookieParser());
