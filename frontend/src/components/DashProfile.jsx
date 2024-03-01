@@ -13,6 +13,7 @@ const DashProfile = () => {
     try {
       const res = await fetch("https://kanboad-app-1.onrender.com/api/user/logout", {
         method: "POST",
+        credentials:"include"
       });
       const data = await res.json();
       if (!res.ok) {
