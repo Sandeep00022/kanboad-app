@@ -60,7 +60,7 @@ const DashCard = ({ board }) => {
     <div className="bg-white p-2 rounded-md overflow-hidden w-[350px]">
       <div className="">
         <h3 className="text-xl font-semibold truncate">{singleData.title}</h3>
-        <p className="text-sm text-gray-400">Owned By {board.name}</p>
+        <p className="text-sm text-gray-400">Owned by { currentUser._id === board.createdBy?"you": board.name}</p>
       </div>
       <div className="mt-4 flex gap-6">
         <div className="flex gap-2">

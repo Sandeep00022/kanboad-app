@@ -69,7 +69,7 @@ const TaskEditModal = ({ setShowModal, showModal, task }) => {
           description: "",
           date: "",
         });
-        console.log("update", data);
+
         dispatch(updateTaskSucess(data));
       }
     } catch (error) {
@@ -121,19 +121,18 @@ const TaskEditModal = ({ setShowModal, showModal, task }) => {
                     </option>
                   ))}
               </Select>
-              {taskForm.users && (
-                <Select
-                  name="status"
-                  value={taskForm.status}
-                  onChange={handlechange}
-                  className="mt-2"
-                >
-                  <option value="">Add status</option>
-                  <option value="In Development">In Development</option>
-                  <option value="Pending Review">Pending Reviews</option>
-                  <option value="Done">Done</option>
-                </Select>
-              )}
+              <Select
+                name="status"
+                value={taskForm.status}
+                onChange={handlechange}
+                className="mt-2"
+              >
+                <option value="">Add status</option>
+                <option value="Unassigned">Unassigned</option>
+                <option value="In Development">In Development</option>
+                <option value="Pending Review">Pending Reviews</option>
+                <option value="Done">Done</option>
+              </Select>
               <Textarea
                 value={taskForm.description}
                 name="description"

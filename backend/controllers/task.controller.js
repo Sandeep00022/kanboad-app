@@ -30,7 +30,11 @@ export const createTask = async (req, res, next) => {
       status,
     });
     await newTask.save();
-    res.status(201).json(newTask);
+    const populatedTask = await Task.findById(newTask._id).populate({
+      path: "assignedUser",
+      select: "_id username email profilePicture",
+    });
+    res.status(201).json(populatedTask);
   } catch (error) {
     next(error);
   }
@@ -62,7 +66,7 @@ export const editTask = async (req, res, next) => {
   console.log(req.user.id);
   try {
     const task = await Task.findById(req.params.taskId);
-    console.log("createdBy",task.createdBy);
+    console.log("createdBy", task.createdBy);
     if (task.createdBy !== req.user.id) {
       return next(errorHandler(404, "Not Authorized"));
     }

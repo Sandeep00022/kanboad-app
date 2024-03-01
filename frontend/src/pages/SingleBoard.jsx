@@ -20,6 +20,7 @@ import {
   allTaskSucces,
   assignedUsersSuccess,
 } from "../redux/task/taskSlice";
+import { Droppable } from "react-beautiful-dnd";
 
 const SingleBoard = () => {
   const [showInviteModal, setShowInviteModal] = useState(false);
@@ -50,8 +51,6 @@ const SingleBoard = () => {
     Pending = allTask.filter((task) => task.status === "Pending Review");
     Done = allTask.filter((task) => task.status === "Done");
   }
-
-  console.log("all", allTask);
 
   const { id } = useParams();
   const board = boards.find((board) => board._id === id);
@@ -191,18 +190,25 @@ const SingleBoard = () => {
                 </button>
               </div>
             </div>
-            <div
-              style={{
-                WebkitOverflowScrolling: "touch",
-                scrollbarWidth: "none",
-                msOverflowStyle: "none",
-              }}
-              className="bg-white h-[80vh] overflow-y-auto scrollbar-hide"
-            >
-              {Unassigned?.map((task) => (
-                <TaskCard key={task._id} task={task} />
-              ))}
-            </div>
+            <Droppable droppableId="unassigned">
+              {(provided) => (
+                <div
+                  style={{
+                    WebkitOverflowScrolling: "touch",
+                    scrollbarWidth: "none",
+                    msOverflowStyle: "none",
+                  }}
+                  className="bg-white h-[70vh] overflow-y-auto scrollbar-hide"
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                >
+                  {Unassigned?.map((task, index) => (
+                    <TaskCard key={task._id} task={task} index={index} />
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
             <Button
               onClick={() => {
                 setTaskStatus("Unassigned");
@@ -224,11 +230,26 @@ const SingleBoard = () => {
                 </button>
               </div>
             </div>
-            <div className="bg-white h-[80vh] overflow-y-auto scrollbar-hide">
-              {InProgress?.map((task) => (
-                <TaskCard key={task._id} task={task} />
-              ))}
-            </div>
+            <Droppable droppableId="in-development">
+              {(provided) => (
+                <div
+                  style={{
+                    WebkitOverflowScrolling: "touch",
+                    scrollbarWidth: "none",
+                    msOverflowStyle: "none",
+                  }}
+                  className="bg-white h-[70vh] overflow-y-auto scrollbar-hide"
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                >
+                  {InProgress?.map((task, index) => (
+                    <TaskCard key={task._id} task={task} index={index} />
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+
             <Button
               onClick={() => {
                 setTaskStatus("In Development");
@@ -250,11 +271,25 @@ const SingleBoard = () => {
                 </button>
               </div>
             </div>
-            <div className="bg-white h-[80vh] overflow-y-auto scrollbar-hide">
-              {Pending?.map((task) => (
-                <TaskCard key={task._id} task={task} />
-              ))}
-            </div>
+            <Droppable droppableId="pending-review">
+              {(provided) => (
+                <div
+                  style={{
+                    WebkitOverflowScrolling: "touch",
+                    scrollbarWidth: "none",
+                    msOverflowStyle: "none",
+                  }}
+                  className="bg-white h-[70vh] overflow-y-auto scrollbar-hide"
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                >
+                  {Pending?.map((task, index) => (
+                    <TaskCard key={task._id} task={task} index={index} />
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
             <Button
               onClick={() => {
                 setTaskStatus("Pending Review");
@@ -276,11 +311,25 @@ const SingleBoard = () => {
                 </button>
               </div>
             </div>
-            <div className="bg-white h-[80vh] overflow-y-auto scrollbar-hide">
-              {Done?.map((task) => (
-                <TaskCard key={task._id} task={task} />
-              ))}
-            </div>
+            <Droppable droppableId="done">
+              {(provided) => (
+                <div
+                  style={{
+                    WebkitOverflowScrolling: "touch",
+                    scrollbarWidth: "none",
+                    msOverflowStyle: "none",
+                  }}
+                  className="bg-white h-[70vh] overflow-y-auto scrollbar-hide"
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                >
+                  {Done?.map((task, index) => (
+                    <TaskCard key={task._id} task={task} index={index} />
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
             <Button
               onClick={() => {
                 setTaskStatus("Done");

@@ -1,37 +1,45 @@
 import { Avatar, Button, Modal, Tooltip } from "flowbite-react";
 import React, { useState } from "react";
 import TaskEditModal from "./TaskEditModal";
+import { Draggable } from "react-beautiful-dnd";
 
-const TaskCard = ({ task }) => {
+const TaskCard = ({ task, index }) => {
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
 
   return (
     <div>
-      <div className="p-3 m-2 bg-[#F5F5F6] rounded-md">
-        <div
-          className="flex justify-between items-center"
-          onClick={() => setShowModal(true)}
-        >
-          <div className="font-semibold">{task.title}</div>
-          <div className="">
-            {task.assignedUser ? (
-              <Tooltip content={task.assignedUser?.email}>
-                <Avatar img={task.profilePicture} rounded />
-              </Tooltip>
-            ) : (
-              <Tooltip content={"task not asssigned"}>
-                <Avatar img={task.profilePicture} rounded />
-              </Tooltip>
-            )}
+      <Draggable draggableId={task._id.toString()} index={index}>
+        {(provided) => (
+          <div
+            onClick={() => setShowModal(true)}
+            className="p-3 m-2 bg-[#F5F5F6] rounded-md hover:cursor-pointer"
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            ref={provided.innerRef}
+          >
+            <div className="flex justify-between items-center">
+              <div className="font-semibold">{task.title}</div>
+              <div className="">
+                {task.assignedUser && task.status !== "Unassigned" ? (
+                  <Tooltip content={task.assignedUser?.email}>
+                    <Avatar img={task.profilePicture} rounded />
+                  </Tooltip>
+                ) : (
+                  <Tooltip content={"task not asssigned"}>
+                    <Avatar img={task.profilePicture} rounded />
+                  </Tooltip>
+                )}
+              </div>
+            </div>
+            <div className="mt-2">
+              <p className="text-xs text-gray-500 line-clamp-2">
+                {task.description}
+              </p>
+            </div>
           </div>
-        </div>
-        <div className="mt-2">
-          <p className="text-xs text-gray-500 line-clamp-2">
-            {task.description}
-          </p>
-        </div>
-      </div>
+        )}
+      </Draggable>
       <Modal
         show={showModal}
         onClose={() => setShowModal(false)}
