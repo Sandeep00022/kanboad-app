@@ -12,7 +12,7 @@ const DashBoards = () => {
   const getBoards = async () => {
     try {
       setLoading(true);
-      const res = await fetch("/api/board");
+      const res = await fetch("https://kanboad-app-1.onrender.com/api/board");
       const data = await res.json();
       if (!res.ok) {
         console.log(data.message);
@@ -40,7 +40,7 @@ const DashBoards = () => {
     <div className=" bg-[#F5F5F6] p-3 w-full">
       <div className="mb-3">
         <h5 className="text-sm font-semibold">
-          All Boards ({boards.totalBoards})
+          All Boards ({boards.length})
         </h5>
       </div>
       <div className="flex gap-2 flex-wrap">

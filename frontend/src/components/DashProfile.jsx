@@ -1,15 +1,17 @@
-import { Avatar, Button } from "flowbite-react";
-import React from "react";
+import { Avatar, Button, Spinner } from "flowbite-react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signoutSuccess } from "../redux/user/userSlice";
 
 const DashProfile = () => {
+  const [loading, setLoading] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const handleLogout = async () => {
+    setLoading(true);
     try {
-      const res = await fetch("/api/user/logout", {
+      const res = await fetch("https://kanboad-app-1.onrender.com/api/user/logout", {
         method: "POST",
       });
       const data = await res.json();
@@ -17,6 +19,7 @@ const DashProfile = () => {
         console.log(data.message);
       } else {
         dispatch(signoutSuccess());
+        setLoading(false);
       }
     } catch (error) {
       console.log(error);
@@ -36,7 +39,13 @@ const DashProfile = () => {
         onClick={handleLogout}
         className="border-red-600 mt-3 bg-white p-1 text-red-600 rounded-lg w-[300px]"
       >
-        Logout
+        {loading ? (
+          <span>
+            <Spinner /> Logging out
+          </span>
+        ) : (
+          "Logout"
+        )}
       </button>
     </div>
   );

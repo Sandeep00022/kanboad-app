@@ -20,7 +20,7 @@ const DashHome = () => {
       return;
     }
     try {
-      const res = await fetch(`/api/board/create`, {
+      const res = await fetch(`https://kanboad-app-1.onrender.com/api/board/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -47,7 +47,7 @@ const DashHome = () => {
   const getBoards = async () => {
     try {
       setLoading(true);
-      const res = await fetch("/api/board?limit=3");
+      const res = await fetch("https://kanboad-app-1.onrender.com/api/board?limit=3");
       const data = await res.json();
       if (!res.ok) {
         console.log(data.message);

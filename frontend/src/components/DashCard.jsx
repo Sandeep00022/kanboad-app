@@ -37,7 +37,7 @@ const DashCard = ({ board }) => {
   const handleEditTitle = async () => {
     try {
       const res = await fetch(
-        `api/board/update/${board._id}/${currentUser._id}`,
+        `https://kanboad-app-1.onrender.com/api/board/update/${board._id}/${currentUser._id}`,
         {
           method: "PATCH",
           headers: {
@@ -67,7 +67,7 @@ const DashCard = ({ board }) => {
   const handleDeleteBoard = async () => {
     try {
       const res = await fetch(
-        `api/board/delete/${board._id}/${currentUser._id}`,
+        `https://kanboad-app-1.onrender.comapi/board/delete/${board._id}/${currentUser._id}`,
         {
           method: "DELETE",
         }

@@ -18,7 +18,7 @@ const OAuth = () => {
     provider.setCustomParameters({ propmt: "select_account" });
     try {
       const resultFromGoogle = await signInWithPopup(auth, provider);
-      const res = await fetch(`api/user/google`, {
+      const res = await fetch(`https://kanboad-app-1.onrender.com/api/user/google`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

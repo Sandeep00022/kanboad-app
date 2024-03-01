@@ -60,7 +60,7 @@ const SingleBoard = () => {
   const getInvitedUsers = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/board/${board._id}/${board.createdBy}`);
+      const res = await fetch(`https://kanboad-app-1.onrender.com/api/board/${board._id}/${board.createdBy}`);
       const data = await res.json();
       if (!res.ok) {
         console.log(data.message);
@@ -103,7 +103,7 @@ const SingleBoard = () => {
     }
 
     try {
-      const res = await fetch(`/api/task/create`, {
+      const res = await fetch(`https://kanboad-app-1.onrender.com/api/task/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -132,7 +132,7 @@ const SingleBoard = () => {
 
   const Alltasks = async () => {
     try {
-      const res = await fetch(`/api/task/${board._id}`);
+      const res = await fetch(`https://kanboad-app-1.onrender.com/api/task/${board._id}`);
       const data = await res.json();
       if (!res.ok) {
         console.log(data.message);
