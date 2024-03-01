@@ -78,7 +78,7 @@ export const updateBoard = async (req, res, next) => {
       const updatedBoard = await Board.findByIdAndUpdate(
         boardId,
         { title: req.body.title },
-        { new: true } 
+        { new: true }
       );
 
       if (!updatedBoard) {
@@ -120,6 +120,19 @@ export const getBoardWithUsers = async (req, res, next) => {
       select: "_id username email profilePicture",
     });
 
+    res.status(200).json(board);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteBoard = async (req, res, next) => {
+  try {
+    const { boardId, userId } = req.params;
+    if (!boardId || !userId) {
+      return next(errorHandler(403, "You are not allowed to delete this post"));
+    }
+    const board = await Board.findByIdAndDelete(boardId);
     res.status(200).json(board);
   } catch (error) {
     next(error);
