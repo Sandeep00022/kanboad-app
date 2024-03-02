@@ -14,7 +14,7 @@ import {
 const DashCard = ({ board }) => {
   const [editedtitle, seteditedTitle] = useState(board.title || "");
   const [showInviteModal, setShowInviteModal] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false)
   const [singleData, setSingleData] = useState(board);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -39,10 +39,10 @@ const DashCard = ({ board }) => {
   const navigate = useNavigate();
 
   const recentVisited = async (id) => {
-    setLoading(true);
+    setLoading(true)
     try {
       const res = await fetch(
-        `https://kanboad-app.onrender.com/api/user/recentboards/${currentUser._id}/${id}`,
+        `/api/user/recentboards/${currentUser._id}/${id}`,
         {
           method: "PATCH",
           headers: {
@@ -56,19 +56,18 @@ const DashCard = ({ board }) => {
       } else {
         console.log("recentVisited", data);
         navigate(`/dashboard/${id}`);
-        setLoading(false);
+        setLoading(false)
         dispatch(recentlyVisitedBoardSuccess(data.recentlyVisitedBoards));
       }
     } catch (error) {
       console.log(error);
-      setLoading(false);
     }
   };
 
   const handleEditTitle = async () => {
     try {
       const res = await fetch(
-        `https://kanboad-app.onrender.com/api/board/update/${board._id}/${currentUser._id}`,
+        `/api/board/update/${board._id}/${currentUser._id}`,
         {
           method: "PATCH",
           headers: {
@@ -98,7 +97,7 @@ const DashCard = ({ board }) => {
   const handleDeleteBoard = async () => {
     try {
       const res = await fetch(
-        `https://kanboad-app.onrender.com/api/board/delete/${board._id}/${currentUser._id}`,
+        `/api/board/delete/${board._id}/${currentUser._id}`,
         {
           method: "DELETE",
         }
@@ -160,13 +159,7 @@ const DashCard = ({ board }) => {
                 className="text-blue-700"
                 color="white"
               >
-                {loading ? (
-                  <span>
-                    <Spinner /> opening
-                  </span>
-                ) : (
-                  "Open"
-                )}
+               {loading? <span><Spinner/> opening</span>:"Open"}
               </Button>
             </div>
             <div>

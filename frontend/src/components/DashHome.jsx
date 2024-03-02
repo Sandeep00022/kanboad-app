@@ -35,7 +35,7 @@ const DashHome = () => {
       return;
     }
     try {
-      const res = await fetch(`https://kanboad-app.onrender.com/api/board/create`, {
+      const res = await fetch(`/api/board/create`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -67,7 +67,7 @@ const DashHome = () => {
   const getBoards = async () => {
     try {
       setLoading(true);
-      const res = await fetch("https://kanboad-app.onrender.com/api/board?limit=3");
+      const res = await fetch("/api/board?limit=3");
       const data = await res.json();
       if (!res.ok) {
         console.log(data.message);
@@ -107,7 +107,7 @@ const DashHome = () => {
       )}
       <div className="mb-3">
         <h5 className="text-sm font-semibold">
-          Recently viewed(Last {recentVisitedBoards.length} Boards)
+          Recently viewed(Last {recentVisitedBoards?.length} Boards)
         </h5>
       </div>
       <div className="flex gap-2 flex-wrap">

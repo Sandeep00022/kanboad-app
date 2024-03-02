@@ -80,7 +80,7 @@ const App = () => {
     }
 
     try {
-      const res = await fetch(`https://kanboad-app.onrender.com/api/task/editTask/${id}`, {
+      const res = await fetch(`/api/task/editTask/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

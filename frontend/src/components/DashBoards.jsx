@@ -22,7 +22,7 @@ const DashBoards = () => {
   const getBoards = async () => {
     try {
       setLoading(true);
-      const res = await fetch("https://kanboad-app.onrender.com/api/board");
+      const res = await fetch("/api/board");
       const data = await res.json();
       if (!res.ok) {
         console.log(data.message);

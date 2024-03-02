@@ -9,10 +9,7 @@ import connection from "./config/config.js";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import path from "path";
-dotenv.config({
-  origin: "https://kanboad-app-2.onrender.com/",
-  credentials: true,
-});
+dotenv.config();
 
 const app = express();
 app.use(cors({
