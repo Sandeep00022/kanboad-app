@@ -11,11 +11,10 @@ import cookieParser from "cookie-parser";
 import path from "path";
 dotenv.config();
 
+const __dirname = path.resolve();
+
 const app = express();
-app.use(cors({
-  origin:"https://kanboad-app-2.onrender.com/",
-  credentials:true
-}));
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
@@ -38,7 +37,7 @@ const options = {
   apis: ["./routes/*routes.js"], // files containing annotations as above
 };
 
-const __dirname = path.resolve();
+
 
 const openapiSpecification = swaggerJsdoc(options);
 app.use("/apidocs", swaggerUi.serve, swaggerUi.setup(openapiSpecification));

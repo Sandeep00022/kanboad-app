@@ -18,21 +18,18 @@ const OAuth = () => {
     provider.setCustomParameters({ propmt: "select_account" });
     try {
       const resultFromGoogle = await signInWithPopup(auth, provider);
-      const res = await fetch(
-        `https://kanboad-app.onrender.com/api/user/google`,
-        {
-          method: "POST",
-          credentials:"include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: resultFromGoogle.user.displayName,
-            email: resultFromGoogle.user.email,
-            googlePhotoUrl: resultFromGoogle.user.photoURL,
-          }),
-        }
-      );
+      const res = await fetch(`/api/user/google`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: resultFromGoogle.user.displayName,
+          email: resultFromGoogle.user.email,
+          googlePhotoUrl: resultFromGoogle.user.photoURL,
+        }),
+      });
       const data = await res.json();
 
       if (res.ok) {
