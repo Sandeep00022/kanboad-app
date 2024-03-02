@@ -14,7 +14,7 @@ dotenv.config();
 const app = express();
 app.use(
   cors({
-    origin: "*",
+    origin: "https://frontend-gxlhizbxo-sandeep00022.vercel.app/",
   })
 );
 app.use(express.json());
