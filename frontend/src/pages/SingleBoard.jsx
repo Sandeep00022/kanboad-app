@@ -60,7 +60,7 @@ const SingleBoard = () => {
   const getInvitedUsers = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`https://kanboad-app-1.onrender.com/api/board/${board._id}/${board.createdBy}`);
+      const res = await fetch(`/api/board/${board._id}/${board.createdBy}`);
       const data = await res.json();
       if (!res.ok) {
         console.log(data.message);
@@ -103,7 +103,7 @@ const SingleBoard = () => {
     }
 
     try {
-      const res = await fetch(`https://kanboad-app-1.onrender.com/api/task/create`, {
+      const res = await fetch(`/api/task/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -132,7 +132,7 @@ const SingleBoard = () => {
 
   const Alltasks = async () => {
     try {
-      const res = await fetch(`https://kanboad-app-1.onrender.com/api/task/${board._id}`);
+      const res = await fetch(`/api/task/${board._id}`);
       const data = await res.json();
       if (!res.ok) {
         console.log(data.message);
@@ -211,18 +211,17 @@ const SingleBoard = () => {
                 </div>
               )}
             </Droppable>
-            {board.createdBy === currentUser._id && (
-              <Button
-                onClick={() => {
-                  setTaskStatus("Unassigned");
-                  setShowModal(true);
-                }}
-                color="blue"
-                className="w-full mt-3"
-              >
-                <FaPlus className="mr-2" /> Add Task
-              </Button>
-            )}
+
+            <Button
+              onClick={() => {
+                setTaskStatus("Unassigned");
+                setShowModal(true);
+              }}
+              color="blue"
+              className="w-full mt-3"
+            >
+              <FaPlus className="mr-2" /> Add Task
+            </Button>
           </div>
           <div className=" bg-white rounded-lg w-[350px] p-3">
             <div className="flex justify-between bg-white items-center m-2 gap-[140px]">
@@ -253,18 +252,17 @@ const SingleBoard = () => {
                 </div>
               )}
             </Droppable>
-            {board.createdBy === currentUser._id && (
-              <Button
-                onClick={() => {
-                  setTaskStatus("In Development");
-                  setShowModal(true);
-                }}
-                color="blue"
-                className="w-full mt-3"
-              >
-                <FaPlus className="mr-2" /> Add Task
-              </Button>
-            )}
+
+            <Button
+              onClick={() => {
+                setTaskStatus("In Development");
+                setShowModal(true);
+              }}
+              color="blue"
+              className="w-full mt-3"
+            >
+              <FaPlus className="mr-2" /> Add Task
+            </Button>
           </div>
           <div className="bg-white rounded-lg w-[350px] p-3">
             <div className="flex justify-between bg-white items-center m-2 gap-[140px]">
@@ -295,18 +293,17 @@ const SingleBoard = () => {
                 </div>
               )}
             </Droppable>
-            {board.createdBy === currentUser._id && (
-              <Button
-                onClick={() => {
-                  setTaskStatus("Pending Review");
-                  setShowModal(true);
-                }}
-                color="blue"
-                className="w-full mt-3"
-              >
-                <FaPlus className="mr-2" /> Add Task
-              </Button>
-            )}
+
+            <Button
+              onClick={() => {
+                setTaskStatus("Pending Review");
+                setShowModal(true);
+              }}
+              color="blue"
+              className="w-full mt-3"
+            >
+              <FaPlus className="mr-2" /> Add Task
+            </Button>
           </div>
           <div className="bg-white rounded-lg w-[350px] p-3">
             <div className="flex justify-between bg-white items-center m-2 gap-[140px]">
@@ -337,18 +334,16 @@ const SingleBoard = () => {
                 </div>
               )}
             </Droppable>
-            {board.createdBy === currentUser._id && (
-              <Button
-                onClick={() => {
-                  setTaskStatus("Done");
-                  setShowModal(true);
-                }}
-                color="blue"
-                className="w-full mt-3"
-              >
-                <FaPlus className="mr-2" /> Add Task
-              </Button>
-            )}
+            <Button
+              onClick={() => {
+                setTaskStatus("Done");
+                setShowModal(true);
+              }}
+              color="blue"
+              className="w-full mt-3"
+            >
+              <FaPlus className="mr-2" /> Add Task
+            </Button>
           </div>
         </div>
       </div>

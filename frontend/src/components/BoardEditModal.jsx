@@ -14,7 +14,7 @@ const BoardEditModal = ({ setShowModal, board, showModal }) => {
   const handleEditTitle = async () => {
     try {
       const res = await fetch(
-        `https://kanboad-app-1.onrender.com/api/board/update/${board._id}/${currentUser._id}`,
+        `/api/board/update/${board._id}/${currentUser._id}`,
         {
           method: "PATCH",
           headers: {
