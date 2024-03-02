@@ -14,7 +14,7 @@ const TaskCard = ({ task, index }) => {
 
   const deleteTask = async (taskId) => {
     try {
-      const res = await fetch(`/api/task/deleteTask/${taskId}`, {
+      const res = await fetch(`https://kanboad-app.onrender.com/api/task/deleteTask/${taskId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

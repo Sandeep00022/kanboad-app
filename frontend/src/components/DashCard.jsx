@@ -1,4 +1,4 @@
-import { Alert, Button, Modal, TextInput } from "flowbite-react";
+import { Alert, Button, Modal, Spinner, TextInput } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { FaPen } from "react-icons/fa";
 import { FiUserPlus } from "react-icons/fi";
@@ -14,7 +14,7 @@ import {
 const DashCard = ({ board }) => {
   const [editedtitle, seteditedTitle] = useState(board.title || "");
   const [showInviteModal, setShowInviteModal] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const [singleData, setSingleData] = useState(board);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -39,9 +39,10 @@ const DashCard = ({ board }) => {
   const navigate = useNavigate();
 
   const recentVisited = async (id) => {
+    setLoading(true);
     try {
       const res = await fetch(
-        `api/user/recentboards/${currentUser._id}/${id}`,
+        `https://kanboad-app.onrender.com/api/user/recentboards/${currentUser._id}/${id}`,
         {
           method: "PATCH",
           headers: {
@@ -55,17 +56,19 @@ const DashCard = ({ board }) => {
       } else {
         console.log("recentVisited", data);
         navigate(`/dashboard/${id}`);
+        setLoading(false);
         dispatch(recentlyVisitedBoardSuccess(data.recentlyVisitedBoards));
       }
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
   const handleEditTitle = async () => {
     try {
       const res = await fetch(
-        `/api/board/update/${board._id}/${currentUser._id}`,
+        `https://kanboad-app.onrender.com/api/board/update/${board._id}/${currentUser._id}`,
         {
           method: "PATCH",
           headers: {
@@ -95,7 +98,7 @@ const DashCard = ({ board }) => {
   const handleDeleteBoard = async () => {
     try {
       const res = await fetch(
-        `/api/board/delete/${board._id}/${currentUser._id}`,
+        `https://kanboad-app.onrender.com/api/board/delete/${board._id}/${currentUser._id}`,
         {
           method: "DELETE",
         }
@@ -157,7 +160,13 @@ const DashCard = ({ board }) => {
                 className="text-blue-700"
                 color="white"
               >
-                Open
+                {loading ? (
+                  <span>
+                    <Spinner /> opening
+                  </span>
+                ) : (
+                  "Open"
+                )}
               </Button>
             </div>
             <div>

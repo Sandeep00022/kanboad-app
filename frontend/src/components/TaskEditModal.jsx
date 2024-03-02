@@ -55,7 +55,7 @@ const TaskEditModal = ({ setShowModal, showModal, task }) => {
     }
 
     try {
-      const res = await fetch(`/api/task/editTask/${task._id}`, {
+      const res = await fetch(`https://kanboad-app.onrender.com/api/task/editTask/${task._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

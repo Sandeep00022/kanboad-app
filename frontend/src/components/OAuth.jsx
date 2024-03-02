@@ -19,7 +19,7 @@ const OAuth = () => {
     try {
       const resultFromGoogle = await signInWithPopup(auth, provider);
       const res = await fetch(
-        `/api/user/google`,
+        `https://kanboad-app.onrender.com/api/user/google`,
         {
           method: "POST",
           credentials:"include",

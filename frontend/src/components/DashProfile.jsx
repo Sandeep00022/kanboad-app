@@ -11,7 +11,7 @@ const DashProfile = () => {
   const handleLogout = async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/user/logout", {
+      const res = await fetch("https://kanboad-app.onrender.com/api/user/logout", {
         method: "POST",
         credentials:"include"
       });

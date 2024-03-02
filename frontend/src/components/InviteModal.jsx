@@ -32,7 +32,7 @@ const InviteModal = ({ showModal, setShowModal, board, onget }) => {
     }
     try {
       setLoading(true);
-      const res = await fetch(`/api/user?search=${query}`);
+      const res = await fetch(`https://kanboad-app.onrender.com/api/user?search=${query}`);
       const data = await res.json();
       if (!res.ok) {
         console.log(data.message);
@@ -52,7 +52,7 @@ const InviteModal = ({ showModal, setShowModal, board, onget }) => {
     }
     try {
       const res = await fetch(
-        `/api/board/update/${board._id}/${board.createdBy}`,
+        `https://kanboad-app.onrender.com/api/board/update/${board._id}/${board.createdBy}`,
         {
           method: "PATCH",
           headers: {
