@@ -15,7 +15,29 @@ dotenv.config({
 });
 
 const app = express();
-app.use(cors());
+const allowedOrigins = [
+  "https://kanboad-app-2.onrender.com",
+  "https://kanboad-app.onrender.com",
+];
+
+// Configure CORS options
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Check if the request origin is in the allowedOrigins array
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+};
+
+// Enable CORS middleware
+app.use(cors(corsOptions));
+
+// Handle preflight requests
+app.options("*", cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
