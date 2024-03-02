@@ -18,6 +18,7 @@ const app = express();
 const allowedOrigins = [
   "https://kanboad-app-2.onrender.com",
   "https://kanboad-app.onrender.com",
+  "https://frontend-gxlhizbxo-sandeep00022.vercel.app/",
 ];
 
 // Configure CORS options
