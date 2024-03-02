@@ -30,14 +30,12 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:3000/",
+        url: "https://kanboad-app-6.onrender.com/",
       },
     ],
   },
   apis: ["./routes/*routes.js"], // files containing annotations as above
 };
-
-
 
 const openapiSpecification = swaggerJsdoc(options);
 app.use("/apidocs", swaggerUi.serve, swaggerUi.setup(openapiSpecification));
