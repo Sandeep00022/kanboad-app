@@ -8,6 +8,7 @@ import {
   taskInSuccess,
 } from "../redux/task/taskSlice";
 import { space } from "postcss/lib/list";
+import { useNavigate } from "react-router-dom";
 
 const DashHome = () => {
   const [showModal, setShowModal] = useState(null);
@@ -15,7 +16,9 @@ const DashHome = () => {
   const [postError, setPostError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [createLoading, setCreateLoading] = useState(false);
+
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { currentUser } = useSelector((state) => state.user);
   const { boards, recentVisitedBoards } = useSelector((state) => state.task);
@@ -50,11 +53,13 @@ const DashHome = () => {
         setTitle("");
         setPostError(null);
         setShowModal(false);
+        navigate("/dashboard?tab=board");
         dispatch(createBoardSuccess(data));
       }
       setCreateLoading(false);
     } catch (error) {
       console.log(error);
+
       setCreateLoading(false);
     }
   };
