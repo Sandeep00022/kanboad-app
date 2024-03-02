@@ -35,10 +35,6 @@ const options = {
   apis: ["./routes/*routes.js"], // files containing annotations as above
 };
 
-app.get("/", (req, res) => {
-  res.send("welcome to backend");
-});
-
 const __dirname = path.resolve();
 
 const openapiSpecification = swaggerJsdoc(options);
