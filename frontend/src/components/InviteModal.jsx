@@ -37,7 +37,7 @@ const InviteModal = ({ showModal, setShowModal, board, onget }) => {
       if (!res.ok) {
         console.log(data.message);
       } else {
-        console.log(data);
+       
         setSelectedUsers(data);
         setLoading(false);
       }

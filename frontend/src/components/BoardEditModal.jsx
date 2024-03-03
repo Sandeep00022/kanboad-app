@@ -7,7 +7,7 @@ const BoardEditModal = ({ setShowModal, board, showModal }) => {
   const [editedtitle, seteditedTitle] = useState(board.title || "");
   const [editError, setEditError] = useState(null);
   const [singleData, setSingleData] = useState(board);
-  console.log("board in modal", board);
+  
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
 
@@ -29,7 +29,7 @@ const BoardEditModal = ({ setShowModal, board, showModal }) => {
       if (!res.ok) {
         setEditError(data.message);
       } else {
-        console.log("updatedData",data)
+        
        dispatch(updateBoardSuccess(data));
         setShowModal(false);
       }

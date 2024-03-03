@@ -54,7 +54,7 @@ const DashCard = ({ board }) => {
       if (!res.ok) {
         console.log(data.message);
       } else {
-        console.log("recentVisited", data);
+       
         navigate(`/dashboard/${id}`);
         setLoading(false)
         dispatch(recentlyVisitedBoardSuccess(data.recentlyVisitedBoards));
@@ -106,7 +106,7 @@ const DashCard = ({ board }) => {
       if (!res.ok) {
         console.log(data.message);
       } else {
-        console.log("deletedData", data);
+       
         dispatch(deleteBoardSuccess(data));
         dispatch(recentlyVisitedBoardSuccess(recentVisitedBoards));
         setShowDeleteModal(false);
@@ -116,7 +116,7 @@ const DashCard = ({ board }) => {
     }
   };
 
-  console.log(recentVisitedBoards);
+  
 
   return (
     <div>

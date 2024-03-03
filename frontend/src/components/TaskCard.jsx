@@ -24,7 +24,7 @@ const TaskCard = ({ task, index }) => {
       if (!res.ok) {
         console.log(data.message);
       } else {
-        console.log(data);
+        
         dispatch(deleteTaskSuccess(taskId))
         setShowModal(false)
       }

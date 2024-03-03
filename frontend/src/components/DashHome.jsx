@@ -26,7 +26,7 @@ const DashHome = () => {
   console.log("recentVistedddd", recentVisitedBoards);
 
   const present = boards.filter((board) => board.createdBy === currentUser._id);
-  console.log("present", present);
+ 
 
   const HandleTitle = async () => {
     setCreateLoading(true);
