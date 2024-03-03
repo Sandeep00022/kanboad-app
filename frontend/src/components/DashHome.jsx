@@ -23,7 +23,7 @@ const DashHome = () => {
   const { currentUser } = useSelector((state) => state.user);
   const { boards, recentVisitedBoards } = useSelector((state) => state.task);
 
-  console.log("recentVistedddd", recentVisitedBoards);
+  
 
   const present = boards.filter((board) => board.createdBy === currentUser._id);
  
