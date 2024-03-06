@@ -56,6 +56,7 @@ const DashCard = ({ board }) => {
       } else {
        
         navigate(`/dashboard/${id}`);
+        
         setLoading(false)
         dispatch(recentlyVisitedBoardSuccess(data.recentlyVisitedBoards));
       }

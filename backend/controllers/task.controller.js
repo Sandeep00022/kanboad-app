@@ -10,6 +10,7 @@ export const createTask = async (req, res, next) => {
       status,
       userId,
       boardId,
+
       assignedUser,
     } = req.body;
 
@@ -24,6 +25,7 @@ export const createTask = async (req, res, next) => {
       description,
       assignedUser,
       dueDate,
+      assignedBy: req.user.name,
       status,
     });
     await newTask.save();
@@ -66,7 +68,7 @@ export const editTask = async (req, res, next) => {
 
     const updatedTask = await Task.findByIdAndUpdate(
       req.params.taskId,
-      req.body,
+      { ...req.body, assignedBy: req.user.name },
       { new: true }
     );
 

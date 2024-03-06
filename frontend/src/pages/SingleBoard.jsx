@@ -53,7 +53,7 @@ const SingleBoard = () => {
     Pending = allTask.filter((task) => task.status === "Pending Review");
     Done = allTask.filter((task) => task.status === "Done");
   }
-  
+
   const { id } = useParams();
   const board = boards.find((board) => board._id === id);
 

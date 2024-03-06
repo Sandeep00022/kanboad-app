@@ -30,7 +30,7 @@ const options = {
     },
     servers: [
       {
-        url: "https://kanboad-app-6.onrender.com/",
+        url: "http://localhost:3000/",
       },
     ],
   },

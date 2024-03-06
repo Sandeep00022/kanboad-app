@@ -23,6 +23,10 @@ const taskSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    assignedBy:{
+      type:String,
+      required:true
+    },
     status: {
       type: String,
       enum: ["Unassigned", "In Development", "Pending Review", "Done"],

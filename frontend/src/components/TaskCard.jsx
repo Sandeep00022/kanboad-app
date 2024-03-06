@@ -10,7 +10,7 @@ const TaskCard = ({ task, index }) => {
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const deleteTask = async (taskId) => {
     try {
@@ -24,9 +24,8 @@ const TaskCard = ({ task, index }) => {
       if (!res.ok) {
         console.log(data.message);
       } else {
-        
-        dispatch(deleteTaskSuccess(taskId))
-        setShowModal(false)
+        dispatch(deleteTaskSuccess(taskId));
+        setShowModal(false);
       }
     } catch (error) {
       console.log(error);
@@ -70,7 +69,7 @@ const TaskCard = ({ task, index }) => {
         show={showModal}
         onClose={() => setShowModal(false)}
         popup
-        size="md"
+        size="xl"
       >
         <Modal.Header />
         <Modal.Body>
@@ -96,20 +95,23 @@ const TaskCard = ({ task, index }) => {
                 </Button>
               </div>
             </div>
-            <div className="mt-3">
-              <label className="text-xs text-gray-500 mb-2" htmlFor="">
-                Assigned to
-              </label>
-              <div className="flex items-center gap-2">
-                <Avatar img={task.assignedUser?.profilePicture} rounded />
-                {task.assignedUser ? (
-                  <p className="text-sm font-semibold">
-                    {task.assignedUser?.email}
-                  </p>
-                ) : (
-                  <p className="text-sm">Not Assigned</p>
-                )}
+            <div className="mt-3 flex justify-center items-center gap-10">
+              <div>
+                <label className="text-xs text-gray-500 mb-2" htmlFor="">
+                  Assigned to
+                </label>
+                <div className="flex items-center gap-2">
+                  <Avatar img={task.assignedUser?.profilePicture} rounded />
+                  {task.assignedUser ? (
+                    <p className="text-sm font-semibold">
+                      {task.assignedUser?.email}
+                    </p>
+                  ) : (
+                    <p className="text-sm">Not Assigned</p>
+                  )}
+                </div>
               </div>
+              <div>by :{task.assignedBy}</div>
             </div>
             <div className="mt-4">
               <label className="text-xs text-gray-500 mb-2" htmlFor="">
