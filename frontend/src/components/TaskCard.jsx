@@ -95,7 +95,7 @@ const TaskCard = ({ task, index }) => {
                 </Button>
               </div>
             </div>
-            <div className="mt-3 flex justify-center items-center gap-10">
+            <div className="mt-3 flex justify-between items-center gap-10">
               <div>
                 <label className="text-xs text-gray-500 mb-2" htmlFor="">
                   Assigned to
