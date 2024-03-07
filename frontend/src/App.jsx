@@ -62,7 +62,7 @@ const App = () => {
     }
 
     draggedTask.status = newStatus;
-   
+
     await updateTaskStatus(draggedTask._id, newStatus);
   };
 
