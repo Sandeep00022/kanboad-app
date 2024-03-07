@@ -2,7 +2,7 @@ import { Avatar, Button, Modal, Tooltip } from "flowbite-react";
 import React, { useState } from "react";
 import TaskEditModal from "./TaskEditModal";
 import { Draggable } from "react-beautiful-dnd";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteTaskSuccess } from "../redux/task/taskSlice";
 
 const TaskCard = ({ task, index }) => {
@@ -11,6 +11,7 @@ const TaskCard = ({ task, index }) => {
   const [showEditModal, setShowEditModal] = useState(false);
 
   const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.user);
 
   const deleteTask = async (taskId) => {
     try {
@@ -32,13 +33,21 @@ const TaskCard = ({ task, index }) => {
     }
   };
 
+  console.log(currentUser._id, task.assignedUser?._id);
+
   return (
     <div>
       <Draggable draggableId={task._id} index={index}>
         {(provided) => (
           <div
             onClick={() => setShowModal(true)}
-            className="p-3 m-2 bg-[#F5F5F6] rounded-md hover:cursor-pointer"
+            className={`p-3 m-2 ${
+              task.status === "Done"
+                ? "bg-green-300"
+                : currentUser._id === task.assignedUser?._id
+                ? "bg-orange-400"
+                : "bg-sky-400"
+            } rounded-md hover:cursor-pointer`}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
@@ -47,7 +56,13 @@ const TaskCard = ({ task, index }) => {
               <div className="font-semibold">{task.title}</div>
               <div className="">
                 {task.assignedUser && task.status !== "Unassigned" ? (
-                  <Tooltip content={task.assignedUser?.email}>
+                  <Tooltip
+                    content={
+                      currentUser.email === task.assignedUser?.email
+                        ? "You"
+                        : task.assignedUser?.email
+                    }
+                  >
                     <Avatar img={task.profilePicture} rounded />
                   </Tooltip>
                 ) : (
@@ -58,7 +73,7 @@ const TaskCard = ({ task, index }) => {
               </div>
             </div>
             <div className="mt-2">
-              <p className="text-xs text-gray-500 line-clamp-2">
+              <p className="text-xs text-gray-700 line-clamp-2">
                 {task.description}
               </p>
             </div>
@@ -111,7 +126,9 @@ const TaskCard = ({ task, index }) => {
                   )}
                 </div>
               </div>
-              <div className="font-semibold text-purple-600">by: {task.assignedBy}</div>
+              <div className="font-semibold text-purple-600">
+                by: {task.assignedBy}
+              </div>
             </div>
             <div className="mt-4">
               <label className="text-xs text-gray-500 mb-2" htmlFor="">
