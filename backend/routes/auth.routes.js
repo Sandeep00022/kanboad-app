@@ -15,6 +15,7 @@ router.get("/", verifyToken, searchUser);
 router.patch("/recentboards/:userId/:boardId", AddRecentVisitedBoards);
 export default router;
 
+
 /**
  * @swagger
  * /api/user/google:
@@ -151,3 +152,4 @@ export default router;
  *         description: Boards updated successfully
  *       # Add other response codes as needed
  */
+

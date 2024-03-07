@@ -111,7 +111,7 @@ const TaskCard = ({ task, index }) => {
                   )}
                 </div>
               </div>
-              <div>by :{task.assignedBy}</div>
+              <div className="font-semibold text-purple-600">by: {task.assignedBy}</div>
             </div>
             <div className="mt-4">
               <label className="text-xs text-gray-500 mb-2" htmlFor="">

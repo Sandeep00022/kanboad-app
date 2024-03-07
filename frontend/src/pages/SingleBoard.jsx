@@ -181,6 +181,21 @@ const SingleBoard = () => {
             </Button>
           </div>
         </div>
+        <div className="flex mt-2 gap-2 items-center p-2 mt-0 rounded w-full bg-white">
+          Invited Users:-
+          {invitedUsers.length ? (
+            <div className="flex gap-2">
+              {invitedUsers.length &&
+                invitedUsers.map((invitedUser) => (
+                  <Button className="flex gap-2" gradientDuoTone={"purpleToBlue"} color="blue" outline value={invitedUser._id} key={invitedUser._id}>
+                    {invitedUser.username}
+                  </Button>
+                ))}
+            </div>
+          ) : (
+            <h1 className="text-center">You have not invited any users now</h1>
+          )}
+        </div>
         <div className=" flex gap-4 flex-wrap p-4 ">
           <div className=" bg-white rounded-lg w-[350px] p-3">
             <div className="flex justify-between bg-white items-center m-2 gap-[140px]">
