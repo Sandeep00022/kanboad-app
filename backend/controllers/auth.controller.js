@@ -13,6 +13,7 @@ export const google = async (req, res, next) => {
         {
           id: user._id,
           name: name,
+          email: email,
         },
         process.env.JWTSECRET
       );
@@ -47,6 +48,7 @@ export const google = async (req, res, next) => {
         {
           id: newUser._id,
           name: name,
+          email: email,
         },
         process.env.JWTSECRET
       );

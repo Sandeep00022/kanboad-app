@@ -67,7 +67,7 @@ export const updateBoard = async (req, res, next) => {
 
   try {
     let board = await Board.findById(boardId);
-
+     
     if (!board) {
       return next(errorHandler(404, "Board not found"));
     }
@@ -97,7 +97,7 @@ export const updateBoard = async (req, res, next) => {
     }
 
     board = await board.save();
-
+   
     await board.populate({
       path: "users",
       select: "_id username email profilePicture",

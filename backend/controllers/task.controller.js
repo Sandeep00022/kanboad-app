@@ -1,5 +1,6 @@
 import Task from "../models/task.model.js";
 import { errorHandler } from "../utils/error.js";
+import { taskAssignedMail } from "../utils/taskAssignedMail.js";
 
 export const createTask = async (req, res, next) => {
   try {
@@ -33,6 +34,13 @@ export const createTask = async (req, res, next) => {
       path: "assignedUser",
       select: "_id username email profilePicture",
     });
+
+    taskAssignedMail(
+      populatedTask.assignedUser.email,
+      req.user.email,
+      populatedTask.boardId
+    );
+
     res.status(201).json(populatedTask);
   } catch (error) {
     next(error);
@@ -62,7 +70,6 @@ export const getAllTasks = async (req, res, next) => {
 };
 
 export const editTask = async (req, res, next) => {
-  
   try {
     const task = await Task.findById(req.params.taskId);
 
@@ -76,6 +83,12 @@ export const editTask = async (req, res, next) => {
       path: "assignedUser",
       select: "_id username email profilePicture",
     });
+
+    taskAssignedMail(
+      populatedTask.assignedUser.email,
+      req.user.email,
+      populatedTask.boardId
+    );
 
     res.status(200).json(populatedTask);
   } catch (error) {
