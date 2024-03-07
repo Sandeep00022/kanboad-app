@@ -5,7 +5,6 @@ export const createBoard = async (req, res, next) => {
   const { title, userId } = req.body;
 
   try {
-    console.log(userId, req.user.id);
     if (userId !== req.user.id) {
       return next(errorHandler(401, "Unauthorized"));
     }

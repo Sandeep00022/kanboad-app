@@ -62,7 +62,7 @@ export const getAllTasks = async (req, res, next) => {
 };
 
 export const editTask = async (req, res, next) => {
-  console.log(req.user.id);
+  
   try {
     const task = await Task.findById(req.params.taskId);
 

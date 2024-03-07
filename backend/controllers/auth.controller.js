@@ -16,7 +16,7 @@ export const google = async (req, res, next) => {
         },
         process.env.JWTSECRET
       );
-      console.log(token);
+
       const { password, ...rest } = user._doc;
       res
         .status(200)
