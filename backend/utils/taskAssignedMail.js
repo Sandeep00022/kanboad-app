@@ -1,5 +1,5 @@
-import nodemailer from "nodemailer";
 import Mailgen from "mailgen";
+import nodemailer from "nodemailer";
 import env from "dotenv";
 env.config();
 
@@ -25,7 +25,7 @@ export const taskAssignedMail = (assignedPerson, assignedBy, boardId) => {
   let response = {
     body: {
       title: `New Task Assigned by ${assignedBy} `,
-      intro: `To know more about your task <a href="https://kanboad-app-6.onrender.com/dashboard/${boardId}">click here</a>`,
+      intro: `To know more about your task <a href="https://kanboad-app-7.onrender.com/dashboard/${boardId}">click here</a>`,
       outro: "Looking forward to see you productive and happy😊",
     },
   };
