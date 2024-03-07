@@ -33,7 +33,7 @@ const TaskCard = ({ task, index }) => {
     }
   };
 
-  console.log(currentUser._id, task.assignedUser?._id);
+ 
 
   return (
     <div>
