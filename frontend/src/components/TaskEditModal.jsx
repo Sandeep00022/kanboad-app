@@ -69,11 +69,6 @@ const TaskEditModal = ({ setShowModal, showModal, task }) => {
       } else {
         setShowModal(false);
         setFormError(null);
-        setTaskFrom({
-          title: "",
-          description: "",
-          date: "",
-        });
 
         dispatch(updateTaskSucess(data));
       }
