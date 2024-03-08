@@ -35,11 +35,15 @@ export const createTask = async (req, res, next) => {
       select: "_id username email profilePicture",
     });
 
-    taskAssignedMail(
-      populatedTask.assignedUser.email,
-      req.user.email,
-      populatedTask.boardId
-    );
+    console.log(populatedTask.assignedUser);
+
+    if (populatedTask.assignedUser !== undefined) {
+      taskAssignedMail(
+        populatedTask.assignedUser.email,
+        req.user.email,
+        populatedTask.boardId
+      );
+    }
 
     res.status(201).json(populatedTask);
   } catch (error) {
@@ -84,11 +88,16 @@ export const editTask = async (req, res, next) => {
       select: "_id username email profilePicture",
     });
 
-    taskAssignedMail(
-      populatedTask.assignedUser.email,
-      req.user.email,
-      populatedTask.boardId
-    );
+    console.log(populatedTask.assignedUser);
+
+    if (populatedTask.assignedUser !== null) {
+      console.log("don't come");
+      taskAssignedMail(
+        populatedTask.assignedUser.email,
+        req.user.email,
+        populatedTask.boardId
+      );
+    }
 
     res.status(200).json(populatedTask);
   } catch (error) {
