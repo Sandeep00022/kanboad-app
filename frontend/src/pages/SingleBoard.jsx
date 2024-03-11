@@ -181,10 +181,10 @@ const SingleBoard = () => {
             </Button>
           </div>
         </div>
-        <div className="flex mt-2 gap-2 items-center p-2 mt-0 rounded w-full bg-white">
+        <div className="flex mt-2 gap-2 items-center p-2 mt-0  rounded w-full bg-white">
           Invited Users:-
           {invitedUsers.length ? (
-            <div className="flex gap-2">
+            <div className="flex gap-2 overflow-hidden overflow-x-scroll">
               {invitedUsers.length &&
                 invitedUsers.map((invitedUser) => (
                   <Button className="flex gap-2" gradientDuoTone={"purpleToBlue"} color="blue" outline value={invitedUser._id} key={invitedUser._id}>
