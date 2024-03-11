@@ -122,7 +122,7 @@ const DashCard = ({ board }) => {
   return (
     <div>
       {(currentUser._id === board.createdBy ||
-        board.users.includes(currentUser._id)) && (
+        board.users?.includes(currentUser._id)) && (
         <div className="bg-white p-2 rounded-md overflow-hidden  ">
           <div className="">
             <h3 className="text-xl font-semibold truncate">

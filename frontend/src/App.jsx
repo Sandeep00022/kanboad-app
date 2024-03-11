@@ -9,6 +9,9 @@ import PrivateRoute from "./components/PrivateRoute";
 import SingleBoard from "./pages/SingleBoard";
 import { useDispatch, useSelector } from "react-redux";
 import { updateTaskSucess } from "./redux/task/taskSlice";
+import Login from "./pages/Login";
+import ForgotPassword from "./pages/ForgotPassword";
+import UpdatePassword from "./pages/UpdatePassword";
 
 const App = () => {
   const { allTask } = useSelector((state) => state.task);
@@ -100,6 +103,9 @@ const App = () => {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
+          <Route path="/updatepassword" element={<UpdatePassword />} />
           <Route element={<PrivateRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/dashboard/:id" element={<SingleBoard />} />

@@ -43,17 +43,17 @@ const OAuth = () => {
       setLoading(false);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
-
-
 
   return (
     <div>
       <Button
         onClick={handleGoogleClick}
         className="mt-10"
-        gradientDuoTone={"purpleToBlue"}
+        gradientDuoTone={"purpleToPink"}
       >
         <FaGoogle className="mr-2" />
         {loading ? <Spinner /> : " Continue with google"}

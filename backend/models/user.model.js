@@ -20,6 +20,8 @@ const userSchmea = new mongoose.Schema(
       type: String,
       default:"https://www.pngarts.com/files/10/Default-Profile-Picture-PNG-Transparent-Image.png",
     },
+  forgotPasswordToken: String,
+  forgotPasswordTokenExpiry: Date,
     recentlyVisitedBoards:[
       {
         type: mongoose.Schema.Types.ObjectId,

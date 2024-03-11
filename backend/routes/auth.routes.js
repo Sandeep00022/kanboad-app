@@ -3,18 +3,24 @@ import {
   AddRecentVisitedBoards,
   Logout,
   google,
+  login,
   searchUser,
+  signup,
+  updatePassword,
+  verifyMail,
 } from "../controllers/auth.controller.js";
 import { verifyToken } from "../utils/verifyUser.js";
 
 const router = express.Router();
-
+router.post("/signup", signup);
+router.post("/login", login);
+router.post("/verifyemail", verifyMail);
+router.post("/updatepassword", updatePassword);
 router.post("/google", google);
 router.post("/logout", Logout);
 router.get("/", verifyToken, searchUser);
 router.patch("/recentboards/:userId/:boardId", AddRecentVisitedBoards);
 export default router;
-
 
 /**
  * @swagger
@@ -152,4 +158,3 @@ export default router;
  *         description: Boards updated successfully
  *       # Add other response codes as needed
  */
-

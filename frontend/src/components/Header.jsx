@@ -9,7 +9,7 @@ const Header = () => {
   //   console.log(currentUser);
 
   return (
-    <div className="border-2  flex justify-between p-2">
+    <div className="border-2  flex justify-between bg-[#CABFFD] p-2 sticky z-10 top-0">
       <div className=" mr-[-100px]">
         <Link to="/dashboard?tab=dash">
           <h3 className=" text-2xl text-center font-medium">

@@ -2,6 +2,74 @@ import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import bcryptjs from "bcryptjs";
 import { errorHandler } from "../utils/error.js";
+import { forgotPasswordMail } from "../utils/forgotPasswordMail.js";
+
+export const signup = async (req, res, next) => {
+  try {
+    const { username, password, email } = req.body;
+    const user = await User.findOne({ email });
+    if (!username || !password || !email) {
+      return next(errorHandler(400, "All fields are required"));
+    }
+    if (user) {
+      return next(errorHandler(400, "User already exists"));
+    }
+
+    const hashedPasword = bcryptjs.hashSync(password, 10);
+    const newUser = new User({
+      username,
+      email,
+      password: hashedPasword,
+    });
+
+    await newUser.save();
+
+    res.status(200).json({
+      data: newUser,
+      message: "User created successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+
+    if (!email || !password) {
+      return next(errorHandler(400, "All fields are required"));
+    }
+    if (!user) {
+      return next(errorHandler(400, "User not found"));
+    }
+    const isMatch = bcryptjs.compareSync(password, user.password);
+    if (!isMatch) {
+      return next(errorHandler(400, "Invalid password"));
+    }
+    const token = jwt.sign(
+      {
+        id: user._id,
+        name: user.username,
+        email: email,
+      },
+      process.env.JWTSECRET
+    );
+
+    user.password = null;
+
+    res
+      .status(200)
+      .cookie("access_token", token, {
+        httpOnly: true,
+        sameSite: "none",
+        path: "/",
+        secure: true,
+      })
+      .json(user);
+  } catch (error) {}
+};
 
 export const google = async (req, res, next) => {
   const { email, name, googlePhotoUrl } = req.body;
@@ -134,6 +202,57 @@ export const AddRecentVisitedBoards = async (req, res, next) => {
     } else {
       next(errorHandler(403, "User  not found"));
     }
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const verifyMail = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return next(errorHandler(400, "Email is required"));
+    }
+    const user = await User.findOne({ email });
+    if (!user) {
+      return next(errorHandler(400, "User not found"));
+    }
+
+    console.log(user);
+
+    await forgotPasswordMail({ email, id: user._id });
+    res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updatePassword = async (req, res, next) => {
+  try {
+    const { password, token } = req.body;
+    console.log(password, token);
+
+    if (!password || !token) {
+      return next(errorHandler(400, "All fields are required"));
+    }
+    const user = await User.findOne({ forgotPasswordToken: token });
+
+    console.log(user);
+
+    if (!user) {
+      return next(errorHandler(400, "Invalid token"));
+    }
+    const hashedPasword = bcryptjs.hashSync(password, 10);
+    user.password = hashedPasword;
+    user.forgotPasswordToken = undefined;
+    user.forgotPasswordTokenExpiry = undefined;
+    await user.save();
+
+    res.status(200).json({
+      message: "Password updated successfully",
+      success: true,
+    });
   } catch (error) {
     next(error);
   }

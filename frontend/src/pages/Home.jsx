@@ -3,6 +3,8 @@ import React from "react";
 import OAuth from "../components/OAuth";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
+import Signup from "../components/Signup";
+import backgroundImg from "../assets/background.jpg";
 const Home = () => {
   const { currentUser } = useSelector((state) => state.user);
 
@@ -11,12 +13,12 @@ const Home = () => {
   }
 
   return (
-    <div className="flex flex-col h-screen justify-between mb-0 ">
-      <h3 className="text-2xl text-center font-medium mt-[150px]">
-        Kan<span className="text-blue-700">Board</span>
-      </h3>
+    <div className="flex flex-col h-screen justify-between mb-0 backimg ">
       <div className="flex flex-col items-center justify-center">
-        <h1 className="text-4xl font-semibold">Welcome to Kanboard</h1>
+        <h1 className="text-2xl text-blue-500 mt-4 font-semibold">
+          Signup to Kanboard
+        </h1>
+        <Signup />
         <OAuth />
       </div>
       <div className="border mb-0  mt-10 bg-purple-200">
