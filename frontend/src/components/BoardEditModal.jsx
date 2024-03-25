@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateBoardSuccess } from "../redux/task/taskSlice";
 
 const BoardEditModal = ({ setShowModal, board, showModal }) => {
-  const [editedtitle, seteditedTitle] = useState(board.title || "");
+  const [editedtitle, seteditedTitle] = useState(board && board.title || "");
   const [editError, setEditError] = useState(null);
   const [singleData, setSingleData] = useState(board);
   

@@ -132,7 +132,7 @@ const SingleBoard = () => {
 
   const Alltasks = async () => {
     try {
-      const res = await fetch(`/api/task/${board._id}`);
+      const res = await fetch(`/api/task/${board && board._id}`);
       const data = await res.json();
       if (!res.ok) {
         console.log(data.message);
@@ -162,7 +162,7 @@ const SingleBoard = () => {
       <div className="  bg-[#F5F5F6] flex flex-col  p-3 w-full">
         <div className=" flex justify-between p-2 mt-0 rounded w-full bg-white">
           <div className="flex  items-center gap-2">
-            <p className="font-semibold">{board.title}</p>
+            <p className="font-semibold">{board && board.title}</p>
             <Button
               onClick={() => setShowInviteModal(true)}
               className="text-blue-700"
